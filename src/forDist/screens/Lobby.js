@@ -1,7 +1,12 @@
-import { StyleSheet, Text, View, ImageBackground, Image } from "react-native";
-import React from "react";
+// react native
+import { StyleSheet, Text, View, ImageBackground, Image,TouchableOpacity } from "react-native";
+// react
+import React,{useState} from "react";
+// media
 import BG from "../assets/bg.png";
 import CASTLE from "../assets/castle.png";
+// import 
+import ModalComponent from "../components/customModal/ModalComponent";
 
 // colori
 const brandColor = "#232726";
@@ -9,8 +14,16 @@ const secondaryColor = "#77523B";
 // mokup
 const userName = "pincopallo";
 const score = 13;
+const arenasList = ['arena1','arena2','arena3','arena1','arena2','arena3','arena1','arena2','arena3']
 
 const Lobby = () => {
+
+    const [stateModalList,setModal] = useState(false)
+
+    const menageModalList = () => {
+        setModal(!stateModalList)
+    }
+
   return (
     <View style={styles.container}>
       {/* bgImage */}
@@ -35,13 +48,13 @@ const Lobby = () => {
         </View>
       </View>
       {/* arenaListSection */}
-      <View style={styles.arenasListConainter}>
+      <TouchableOpacity onPress={menageModalList} style={styles.arenasListConainter}>
         <View style={styles.arenasList}>
           <Text style={styles.sectionTitle}>
             LISTA ARENE
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
       {/* create new arena */}
       <View style={styles.arenasListConainter}>
         <View style={styles.arenasList}>
@@ -52,6 +65,14 @@ const Lobby = () => {
       </View>
       {/* image castle */}
       <Image source={CASTLE} resizeMode={"cover"} style={styles.imageCastle} />
+      <ModalComponent
+      isOpen={stateModalList}
+      >
+        {/* DA CONTINUARE */}
+      <View style={styles.modalList}>
+
+      </View>
+      </ModalComponent>
     </View>
   );
 };
