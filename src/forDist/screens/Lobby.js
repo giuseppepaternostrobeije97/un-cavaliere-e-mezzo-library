@@ -1,5 +1,5 @@
 // react native
-import { StyleSheet, Text, View, ImageBackground, Image,TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, ImageBackground, Image,TouchableOpacity,FlatList } from "react-native";
 // react
 import React,{useState} from "react";
 // media
@@ -7,7 +7,7 @@ import BG from "../assets/bg.png";
 import CASTLE from "../assets/castle.png";
 // import 
 import ModalComponent from "../components/customModal/ModalComponent";
-
+import CustomButton from '../components/customButton/CustomButton'
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
@@ -18,11 +18,52 @@ const arenasList = ['arena1','arena2','arena3','arena1','arena2','arena3','arena
 
 const Lobby = () => {
 
-    const [stateModalList,setModal] = useState(false)
+    const [state,setState] = useState({
+      areanasModalList:false,
+      createArenasModal:false
+    })
+
 
     const menageModalList = () => {
-        setModal(!stateModalList)
+        setState({
+          ...state,
+          areanasModalList:!state.areanasModalList
+        })
     }
+
+    const menageModalNew = () => {
+      console.log('change state');
+      setState({
+        ...state,
+        createArenasModal:!state.createArenasModal
+      })
+  }
+
+    const keyExtractor = (item, idx) => {
+      return item?.id?.toString() || idx?.toString();
+    };
+  
+    const renderItem = ({ item }) => {
+      return (
+        <TouchableOpacity
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "row",
+            width: '80%',
+            padding: 10,
+            backgroundColor:secondaryColor,
+            marginVertical:10,
+            marginHorizontal:'auto',
+            borderRadius:5
+          }}
+        >
+          <Text style={{ color: brandColor, fontSize: 18, textAlign:'center',fontWeight:'bold' }}>
+            {item}
+          </Text>
+        </TouchableOpacity>
+      );
+    };
 
   return (
     <View style={styles.container}>
@@ -56,7 +97,7 @@ const Lobby = () => {
         </View>
       </TouchableOpacity>
       {/* create new arena */}
-      <TouchableOpacity style={styles.arenasListConainter}>
+      <TouchableOpacity onPress={menageModalNew} style={styles.arenasListConainter}>
         <View style={styles.arenasList}>
           <Text style={styles.sectionTitle}>
             CREA ARENA
@@ -65,12 +106,42 @@ const Lobby = () => {
       </TouchableOpacity>
       {/* image castle */}
       <Image source={CASTLE} resizeMode={"cover"} style={styles.imageCastle} />
+      {/* modale lista arene */}
       <ModalComponent
-      isOpen={stateModalList}
+      isOpen={state.areanasModalList}
       >
-        {/* DA CONTINUARE */}
       <View style={styles.modalList}>
-
+        <Text style={styles.titleModal}>
+          LISTA ARENE
+        </Text>
+        <FlatList
+          style={{height:'100%'}}
+          data={arenasList}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+        />
+        <CustomButton
+        onClickCallback={menageModalList}
+        label={'CHIUDI'}
+        buttonContainerStyle={styles.buttonCSModal}
+        buttonTextStyle={styles.buttonTSModal}
+        />
+      </View>
+      </ModalComponent>
+      {/* modale crea nuova arena */}
+      <ModalComponent
+      isOpen={state.createArenasModal}
+      >
+      <View style={styles.modalList}>
+        <Text style={styles.titleModal}>
+          CREA ARENA
+        </Text>
+        <CustomButton
+        onClickCallback={menageModalNew}
+        label={'CHIUDI'}
+        buttonContainerStyle={styles.buttonCSModal}
+        buttonTextStyle={styles.buttonTSModal}
+        />
       </View>
       </ModalComponent>
     </View>
@@ -114,6 +185,12 @@ const styles = StyleSheet.create({
     zIndex: 4,
     width: "100%",
     height: "40%",
+    shadowColor: brandColor,
+    shadowRadius: 10,
+    shadowOffset: {
+      height: 5,
+      width: 5,
+    },
   },
   userSection: {
     display: "flex",
@@ -177,5 +254,23 @@ const styles = StyleSheet.create({
     height:'80%',
     backgroundColor:brandColor,
     borderRadius:5
+  },
+  titleModal:{
+    fontSize:20,
+    textAlign:"center",
+    color:secondaryColor,
+    fontWeight:"bold",
+    marginVertical:10
+  },
+  buttonCSModal : {
+    padding:10,
+    display:'flex',
+    justifyContent:'center',
+    margin:'auto'
+  },
+  buttonTSModal:{
+    color: secondaryColor,
+    fontWeight:'bold',
+    fontSize:18
   }
 });
