@@ -43,7 +43,9 @@ const Login = (props) => {
       //controllo response
       if (response.status === 200) {
         console.log("Login");
-        //props.callbackLogin(e);
+        if (!!props.callbackLogin) {
+          props.callbackLogin();
+        }
       }
     }
   }
