@@ -56,13 +56,13 @@ const Lobby = () => {
         </View>
       </TouchableOpacity>
       {/* create new arena */}
-      <View style={styles.arenasListConainter}>
+      <TouchableOpacity style={styles.arenasListConainter}>
         <View style={styles.arenasList}>
           <Text style={styles.sectionTitle}>
             CREA ARENA
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
       {/* image castle */}
       <Image source={CASTLE} resizeMode={"cover"} style={styles.imageCastle} />
       <ModalComponent
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     left: 0,
-    zIndex: 2,
+    zIndex: 4,
     width: "100%",
     height: "40%",
   },
@@ -171,5 +171,11 @@ const styles = StyleSheet.create({
     color:'#fff',
     fontSize:30,
     fontWeight:'bold'
+  },
+  modalList:{
+    width:'80%',
+    height:'80%',
+    backgroundColor:brandColor,
+    borderRadius:5
   }
 });
