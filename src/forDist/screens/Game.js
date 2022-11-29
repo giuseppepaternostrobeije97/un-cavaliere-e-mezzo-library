@@ -9,11 +9,26 @@ const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Game = () => {
+  //web socket
+  const ws = new WebSocket(
+    "wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/"
+  );
+  ws.onopen = (event) => {
+    console.log("Connessione");
+  };
+  ws.onmessage = function (event) {
+    console.log(event);
+  };
+
   const stop = () => {
+    ws.send("stop");
+
     console.log("stop");
   };
 
   const card = () => {
+    ws.send("card");
+
     console.log("card");
   };
 

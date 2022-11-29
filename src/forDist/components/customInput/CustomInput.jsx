@@ -1,17 +1,24 @@
 //react functionalities
-import React from "react";
+import React, { useState } from "react";
 import propTypes from "prop-types";
 
 //Native components
 import { TextInput, View } from "react-native";
 
 const CustomInput = (props) => {
+  const [value, setValue] = useState("");
   const typing = (e) => {
-    props.callback(e);
+    setValue(e);
+    if (!!props?.callback) {
+      console.log("aaa");
+      props?.callback(e);
+    }
   };
   return (
     <View>
       <TextInput
+        ref={props.refCustom}
+        value={value}
         secureTextEntry={props.password}
         style={props.styleCss}
         onChangeText={typing}
@@ -23,10 +30,11 @@ const CustomInput = (props) => {
 };
 
 CustomInput.propTypes = {
-  callback: propTypes.any,
+  refCustom: propTypes.any,
+  callback: propTypes.func,
   styleCss: propTypes.object,
   placeholder: propTypes.string,
   password: propTypes.bool,
-  placeholderColor: propTypes.any
+  placeholderColor: propTypes.any,
 };
 export default CustomInput;

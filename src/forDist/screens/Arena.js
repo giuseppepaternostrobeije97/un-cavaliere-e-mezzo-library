@@ -9,42 +9,54 @@ import CustomButton from "../components/customButton/CustomButton";
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
-export default class Arena extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        {/* titleSection */}
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>ARENA</Text>
-          <View style={{ padding: 10 }}>
-            <Text style={styles.normalText}>
-              Lo scontro potra' partire con un minimo di 2 cavalieri e un
-              massimo di 4
-            </Text>
-          </View>
-        </View>
-        <View style={styles.containerCard}>
-          <CardPlayer />
-          <CardPlayer />
-        </View>
+const Arena = () => {
+  //web socket
+  const ws = new WebSocket(
+    "wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/"
+  );
+  ws.onopen = (event) => {
+    console.log("Connessione");
+  };
+  ws.onmessage = function (event) {
+    console.log(event);
+  };
 
-        <CustomButton
-          onClickCallback={() => {
-            console.log("press Shield");
-          }}
-          buttonContainerStyle={styles.btImage}
-        >
-          <Image resizeMode={"contain"} style={styles.image} source={shield} />
-        </CustomButton>
+  const play = () => {
+    ws.send("play");
+    console.log("play");
+  };
 
-        <View style={styles.containerCard}>
-          <CardPlayer />
-          <CardPlayer />
+  return (
+    <View style={styles.container}>
+      {/* titleSection */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>ARENA</Text>
+        <View style={{ padding: 10 }}>
+          <Text style={styles.normalText}>
+            Lo scontro potra' partire con un minimo di 2 cavalieri e un massimo
+            di 4
+          </Text>
         </View>
       </View>
-    );
-  }
-}
+      <View style={styles.containerCard}>
+        <CardPlayer />
+        <CardPlayer />
+      </View>
+
+      <CustomButton
+        onClickCallback={play}
+        buttonContainerStyle={styles.btImage}
+      >
+        <Image resizeMode={"contain"} style={styles.image} source={shield} />
+      </CustomButton>
+
+      <View style={styles.containerCard}>
+        <CardPlayer />
+        <CardPlayer />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -94,3 +106,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
+
+export default Arena;

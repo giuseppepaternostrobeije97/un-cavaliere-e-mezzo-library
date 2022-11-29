@@ -7,7 +7,7 @@ import Game from "./forDist/screens/Game";
 function App() {
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
-      <Game />
+      <Register />
     </div>
   );
 }

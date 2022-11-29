@@ -1,9 +1,14 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import CustomButton from "../components/customButton/CustomButton";
 import CustomInput from "../components/customInput/CustomInput";
 //image
 import loginImage from "../assets/knight2.png";
+//api
+import { registrationApi } from "../services/api/registrationAPI";
+//function
+import checkEmptyText from "../utils/checkEmptyText";
+import checkEmailValidation from "../utils/checkEmailValidation";
 
 import PropTypes from "prop-types";
 
@@ -11,20 +16,52 @@ const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Register = (props) => {
-  function onClickLogin(e) {
-    console.log("Login");
+  const refEmail = useRef(null);
+  const refName = useRef(null);
+  const refPassword = useRef(null);
+  const refConfirmPassword = useRef(null);
 
-    props.callbackLogin(e);
-  }
+  function onClickRegister() {
+    let email = refEmail.current.value;
+    let name = refName.current.value;
+    let password = refPassword.current.value;
+    let confirmPassword = refConfirmPassword.current.value;
 
-  function onClickRegister(e) {
+    //controllo campi vuoti
+    let emptyEmail = checkEmptyText(email);
+    let emptyName = checkEmptyText(name);
+    let emptyPassword = checkEmptyText(password);
+
+    let validEmail = checkEmailValidation(email);
+
+    if (
+      !emptyEmail &&
+      validEmail &&
+      !emptyName &&
+      !emptyPassword &&
+      password === confirmPassword
+    ) {
+      //creazione oggetto da inviare
+      let user = {
+        email: email,
+        userName: name,
+        password: password,
+      };
+
+      //api
+      const response = registrationApi(user);
+
+      //controllo response
+      if (response.status === 200) {
+        console.log("Login");
+
+        if (!!props.callbackRegister) {
+          props.callbackRegister();
+        }
+      }
+    }
+
     console.log("Register");
-
-    props.callbackRegister(e);
-  }
-
-  function logInput(e) {
-    console.log("input: ", e);
   }
 
   return (
@@ -32,25 +69,25 @@ const Register = (props) => {
       <View style={styles.containerLogin}>
         <Text style={styles.title}>REGISTRA CAVALIERE</Text>
         <CustomInput
-          callback={logInput}
+          refCustom={refEmail}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Email"}
         />
         <CustomInput
-          callback={logInput}
+          refCustom={refName}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Username"}
         />
         <CustomInput
-          callback={logInput}
+          refCustom={refPassword}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Password"}
         />
         <CustomInput
-          callback={logInput}
+          refCustom={refConfirmPassword}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Conferma Password"}

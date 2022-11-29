@@ -1,9 +1,14 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import CustomButton from "../components/customButton/CustomButton";
 import CustomInput from "../components/customInput/CustomInput";
 //image
 import loginImage from "../assets/knight4.png";
+//api
+import { signinApi } from "../services/api/loginAPI";
+//function
+import checkEmptyText from "../utils/checkEmptyText";
+import checkEmailValidation from "../utils/checkEmailValidation";
 
 import PropTypes from "prop-types";
 
@@ -11,10 +16,36 @@ const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Login = (props) => {
-  function onClickLogin(e) {
-    console.log("Login");
+  const refEmail = useRef(null);
+  const refPassword = useRef(null);
 
-    props.callbackLogin(e);
+  function onClickLogin() {
+    let email = refEmail.current.value;
+    let password = refPassword.current.value;
+
+    //controllo campi vuoti
+    let emptyEmail = checkEmptyText(email);
+    let emptyPassword = checkEmptyText(password);
+
+    let validEmail = checkEmailValidation(email);
+
+    //controllo campi email, password
+    if (!emptyEmail && validEmail && !emptyPassword) {
+      //creazione oggetto da inviare
+      let user = {
+        email: email,
+        password: password,
+      };
+
+      //api
+      const response = signinApi(user);
+
+      //controllo response
+      if (response.status === 200) {
+        console.log("Login");
+        //props.callbackLogin(e);
+      }
+    }
   }
 
   function onClickRegister(e) {
@@ -23,22 +54,18 @@ const Login = (props) => {
     props.callbackRegister(e);
   }
 
-  function logInput(e) {
-    console.log("input: ", e);
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.containerLogin}>
         <Text style={styles.title}>IDENTIFICA CAVALIERE</Text>
         <CustomInput
-          callback={logInput}
+          refCustom={refEmail}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Email"}
         />
         <CustomInput
-          callback={logInput}
+          refCustom={refPassword}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Password"}
