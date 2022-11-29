@@ -46,17 +46,18 @@ var Login = function Login(props) {
       };
 
       //api
-      var response = (0, _loginAPI.signinApi)(user);
+      // const response = signinApi(user);
 
-      //controllo response
-      if (response.status === 200) {
-        console.log("Login");
-        if (!!props.callbackLogin) {
-          props.callbackLogin();
-        }
+      // //controllo response
+      // if (response.status === 200) {
+      console.log("Login");
+      if (!!props.callbackLogin) {
+        props.callbackLogin();
       }
+      // }
     }
   }
+
   function onClickRegister(e) {
     console.log("Register");
     props.callbackRegister(e);

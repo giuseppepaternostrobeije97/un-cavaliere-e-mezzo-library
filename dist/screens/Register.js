@@ -50,16 +50,18 @@ var Register = function Register(props) {
       };
 
       //api
-      var response = (0, _registrationAPI.registrationApi)(user);
+      // const response = registrationApi(user);
 
-      //controllo response
-      if (response.status === 200) {
-        console.log("Login");
-        if (!!props.callbackRegister) {
-          props.callbackRegister();
-        }
+      // //controllo response
+      // if (response.status === 200) {
+      //   console.log("Login");
+
+      if (!!props.callbackRegister) {
+        props.callbackRegister();
       }
+      // }
     }
+
     console.log("Register");
   }
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {

@@ -10,6 +10,7 @@ var _react = _interopRequireWildcard(require("react"));
 var _CardPlayer = _interopRequireDefault(require("../components/cardPlayer/CardPlayer"));
 var _shield = _interopRequireDefault(require("../assets/shield.png"));
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -19,7 +20,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 var brandColor = "#232726";
 var secondaryColor = "#77523B";
-var Arena = function Arena() {
+var Arena = function Arena(props) {
   //web socket
   var ws = new WebSocket("wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/");
   ws.onopen = function (event) {
@@ -31,6 +32,7 @@ var Arena = function Arena() {
   var play = function play() {
     ws.send("play");
     console.log("play");
+    props.game();
   };
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.container
@@ -105,5 +107,8 @@ var styles = _reactNative.StyleSheet.create({
     justifyContent: "space-between"
   }
 });
+Arena.protoType = {
+  game: _propTypes.default.func
+};
 var _default = Arena;
 exports.default = _default;

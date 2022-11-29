@@ -6,14 +6,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _reactNative = require("react-native");
+var _propTypes = _interopRequireDefault(require("prop-types"));
 var _react = _interopRequireWildcard(require("react"));
 var _bg = _interopRequireDefault(require("../assets/bg.png"));
 var _castle = _interopRequireDefault(require("../assets/castle.png"));
 var _ModalComponent = _interopRequireDefault(require("../components/customModal/ModalComponent"));
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -31,8 +32,8 @@ var secondaryColor = "#77523B";
 // mokup
 var userName = "pincopallo";
 var score = 13;
-var arenasList = ['arena1', 'arena2', 'arena3', 'arena1', 'arena2', 'arena3', 'arena1', 'arena2', 'arena3'];
-var Lobby = function Lobby() {
+var arenasList = ["arena1", "arena2", "arena3", "arena1", "arena2", "arena3", "arena1", "arena2", "arena3"];
+var Lobby = function Lobby(props) {
   var _useState = (0, _react.useState)({
       areanasModalList: false,
       createArenasModal: false
@@ -46,10 +47,13 @@ var Lobby = function Lobby() {
     }));
   };
   var menageModalNew = function menageModalNew() {
-    console.log('change state');
+    console.log("change state");
     setState(_objectSpread(_objectSpread({}, state), {}, {
       createArenasModal: !state.createArenasModal
     }));
+  };
+  var goLobby = function goLobby() {
+    props.goLobby();
   };
   var keyExtractor = function keyExtractor(item, idx) {
     var _item$id;
@@ -58,23 +62,24 @@ var Lobby = function Lobby() {
   var renderItem = function renderItem(_ref) {
     var item = _ref.item;
     return /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
+      onPress: goLobby,
       style: {
         display: "flex",
         justifyContent: "center",
         flexDirection: "row",
-        width: '80%',
+        width: "80%",
         padding: 10,
         backgroundColor: secondaryColor,
         marginVertical: 10,
-        marginHorizontal: 'auto',
+        marginHorizontal: "auto",
         borderRadius: 5
       }
     }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
       style: {
         color: brandColor,
         fontSize: 18,
-        textAlign: 'center',
-        fontWeight: 'bold'
+        textAlign: "center",
+        fontWeight: "bold"
       }
     }, item));
   };
@@ -129,14 +134,14 @@ var Lobby = function Lobby() {
     style: styles.titleModal
   }, "LISTA ARENE"), /*#__PURE__*/_react.default.createElement(_reactNative.FlatList, {
     style: {
-      height: '100%'
+      height: "100%"
     },
     data: arenasList,
     renderItem: renderItem,
     keyExtractor: keyExtractor
   }), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
     onClickCallback: menageModalList,
-    label: 'CHIUDI',
+    label: "CHIUDI",
     buttonContainerStyle: styles.buttonCSModal,
     buttonTextStyle: styles.buttonTSModal
   }))), /*#__PURE__*/_react.default.createElement(_ModalComponent.default, {
@@ -147,13 +152,11 @@ var Lobby = function Lobby() {
     style: styles.titleModal
   }, "CREA ARENA"), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
     onClickCallback: menageModalNew,
-    label: 'CHIUDI',
+    label: "CHIUDI",
     buttonContainerStyle: styles.buttonCSModal,
     buttonTextStyle: styles.buttonTSModal
   }))));
 };
-var _default = Lobby;
-exports.default = _default;
 var styles = _reactNative.StyleSheet.create({
   container: {
     height: "100%",
@@ -249,13 +252,13 @@ var styles = _reactNative.StyleSheet.create({
     width: "100%"
   },
   sectionTitle: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 30,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   },
   modalList: {
-    width: '80%',
-    height: '80%',
+    width: "80%",
+    height: "80%",
     backgroundColor: brandColor,
     borderRadius: 5
   },
@@ -268,13 +271,18 @@ var styles = _reactNative.StyleSheet.create({
   },
   buttonCSModal: {
     padding: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    margin: 'auto'
+    display: "flex",
+    justifyContent: "center",
+    margin: "auto"
   },
   buttonTSModal: {
     color: secondaryColor,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 18
   }
 });
+Lobby.protoType = {
+  goLobby: _propTypes.default.func
+};
+var _default = Lobby;
+exports.default = _default;

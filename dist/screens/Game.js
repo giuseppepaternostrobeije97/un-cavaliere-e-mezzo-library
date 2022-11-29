@@ -8,6 +8,7 @@ var _reactNative = require("react-native");
 var _react = _interopRequireDefault(require("react"));
 var _CARTENAPOLETANE = _interopRequireDefault(require("../assets/CARTE-NAPOLETANE.png"));
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // colori
 var brandColor = "#232726";
