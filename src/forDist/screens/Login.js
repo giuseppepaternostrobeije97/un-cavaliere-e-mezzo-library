@@ -38,15 +38,15 @@ const Login = (props) => {
       };
 
       //api
-      const response = signinApi(user);
+      // const response = signinApi(user);
 
-      //controllo response
-      if (response.status === 200) {
-        console.log("Login");
-        if (!!props.callbackLogin) {
-          props.callbackLogin();
-        }
+      // //controllo response
+      // if (response.status === 200) {
+      console.log("Login");
+      if (!!props.callbackLogin) {
+        props.callbackLogin();
       }
+      // }
     }
   }
 

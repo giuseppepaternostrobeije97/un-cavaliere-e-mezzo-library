@@ -1,69 +1,97 @@
 // react native
-import { StyleSheet, Text, View, ImageBackground, Image,TouchableOpacity,FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import PropTypes from "prop-types";
 // react
-import React,{useState} from "react";
+import React, { useState } from "react";
 // media
 import BG from "../assets/bg.png";
 import CASTLE from "../assets/castle.png";
-// import 
+// import
 import ModalComponent from "../components/customModal/ModalComponent";
-import CustomButton from '../components/customButton/CustomButton'
+import CustomButton from "../components/customButton/CustomButton";
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
 // mokup
 const userName = "pincopallo";
 const score = 13;
-const arenasList = ['arena1','arena2','arena3','arena1','arena2','arena3','arena1','arena2','arena3']
+const arenasList = [
+  "arena1",
+  "arena2",
+  "arena3",
+  "arena1",
+  "arena2",
+  "arena3",
+  "arena1",
+  "arena2",
+  "arena3",
+];
 
-const Lobby = () => {
+const Lobby = (props) => {
+  const [state, setState] = useState({
+    areanasModalList: false,
+    createArenasModal: false,
+  });
 
-    const [state,setState] = useState({
-      areanasModalList:false,
-      createArenasModal:false
-    })
+  const menageModalList = () => {
+    setState({
+      ...state,
+      areanasModalList: !state.areanasModalList,
+    });
+  };
 
+  const menageModalNew = () => {
+    console.log("change state");
+    setState({
+      ...state,
+      createArenasModal: !state.createArenasModal,
+    });
+  };
+  const goLobby = () => {
+    props.goLobby();
+  };
 
-    const menageModalList = () => {
-        setState({
-          ...state,
-          areanasModalList:!state.areanasModalList
-        })
-    }
+  const keyExtractor = (item, idx) => {
+    return item?.id?.toString() || idx?.toString();
+  };
 
-    const menageModalNew = () => {
-      console.log('change state');
-      setState({
-        ...state,
-        createArenasModal:!state.createArenasModal
-      })
-  }
-
-    const keyExtractor = (item, idx) => {
-      return item?.id?.toString() || idx?.toString();
-    };
-  
-    const renderItem = ({ item }) => {
-      return (
-        <TouchableOpacity
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={goLobby}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+          width: "80%",
+          padding: 10,
+          backgroundColor: secondaryColor,
+          marginVertical: 10,
+          marginHorizontal: "auto",
+          borderRadius: 5,
+        }}
+      >
+        <Text
           style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "row",
-            width: '80%',
-            padding: 10,
-            backgroundColor:secondaryColor,
-            marginVertical:10,
-            marginHorizontal:'auto',
-            borderRadius:5
+            color: brandColor,
+            fontSize: 18,
+            textAlign: "center",
+            fontWeight: "bold",
           }}
         >
-          <Text style={{ color: brandColor, fontSize: 18, textAlign:'center',fontWeight:'bold' }}>
-            {item}
-          </Text>
-        </TouchableOpacity>
-      );
-    };
+          {item}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -89,66 +117,58 @@ const Lobby = () => {
         </View>
       </View>
       {/* arenaListSection */}
-      <TouchableOpacity onPress={menageModalList} style={styles.arenasListConainter}>
+      <TouchableOpacity
+        onPress={menageModalList}
+        style={styles.arenasListConainter}
+      >
         <View style={styles.arenasList}>
-          <Text style={styles.sectionTitle}>
-            LISTA ARENE
-          </Text>
+          <Text style={styles.sectionTitle}>LISTA ARENE</Text>
         </View>
       </TouchableOpacity>
       {/* create new arena */}
-      <TouchableOpacity onPress={menageModalNew} style={styles.arenasListConainter}>
+      <TouchableOpacity
+        onPress={menageModalNew}
+        style={styles.arenasListConainter}
+      >
         <View style={styles.arenasList}>
-          <Text style={styles.sectionTitle}>
-            CREA ARENA
-          </Text>
+          <Text style={styles.sectionTitle}>CREA ARENA</Text>
         </View>
       </TouchableOpacity>
       {/* image castle */}
       <Image source={CASTLE} resizeMode={"cover"} style={styles.imageCastle} />
       {/* modale lista arene */}
-      <ModalComponent
-      isOpen={state.areanasModalList}
-      >
-      <View style={styles.modalList}>
-        <Text style={styles.titleModal}>
-          LISTA ARENE
-        </Text>
-        <FlatList
-          style={{height:'100%'}}
-          data={arenasList}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-        />
-        <CustomButton
-        onClickCallback={menageModalList}
-        label={'CHIUDI'}
-        buttonContainerStyle={styles.buttonCSModal}
-        buttonTextStyle={styles.buttonTSModal}
-        />
-      </View>
+      <ModalComponent isOpen={state.areanasModalList}>
+        <View style={styles.modalList}>
+          <Text style={styles.titleModal}>LISTA ARENE</Text>
+          <FlatList
+            style={{ height: "100%" }}
+            data={arenasList}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+          />
+          <CustomButton
+            onClickCallback={menageModalList}
+            label={"CHIUDI"}
+            buttonContainerStyle={styles.buttonCSModal}
+            buttonTextStyle={styles.buttonTSModal}
+          />
+        </View>
       </ModalComponent>
       {/* modale crea nuova arena */}
-      <ModalComponent
-      isOpen={state.createArenasModal}
-      >
-      <View style={styles.modalList}>
-        <Text style={styles.titleModal}>
-          CREA ARENA
-        </Text>
-        <CustomButton
-        onClickCallback={menageModalNew}
-        label={'CHIUDI'}
-        buttonContainerStyle={styles.buttonCSModal}
-        buttonTextStyle={styles.buttonTSModal}
-        />
-      </View>
+      <ModalComponent isOpen={state.createArenasModal}>
+        <View style={styles.modalList}>
+          <Text style={styles.titleModal}>CREA ARENA</Text>
+          <CustomButton
+            onClickCallback={menageModalNew}
+            label={"CHIUDI"}
+            buttonContainerStyle={styles.buttonCSModal}
+            buttonTextStyle={styles.buttonTSModal}
+          />
+        </View>
       </ModalComponent>
     </View>
   );
 };
-
-export default Lobby;
 
 const styles = StyleSheet.create({
   container: {
@@ -244,33 +264,39 @@ const styles = StyleSheet.create({
     height: 2,
     width: "100%",
   },
-  sectionTitle:{
-    color:'#fff',
-    fontSize:30,
-    fontWeight:'bold'
+  sectionTitle: {
+    color: "#fff",
+    fontSize: 30,
+    fontWeight: "bold",
   },
-  modalList:{
-    width:'80%',
-    height:'80%',
-    backgroundColor:brandColor,
-    borderRadius:5
+  modalList: {
+    width: "80%",
+    height: "80%",
+    backgroundColor: brandColor,
+    borderRadius: 5,
   },
-  titleModal:{
-    fontSize:20,
-    textAlign:"center",
-    color:secondaryColor,
-    fontWeight:"bold",
-    marginVertical:10
-  },
-  buttonCSModal : {
-    padding:10,
-    display:'flex',
-    justifyContent:'center',
-    margin:'auto'
-  },
-  buttonTSModal:{
+  titleModal: {
+    fontSize: 20,
+    textAlign: "center",
     color: secondaryColor,
-    fontWeight:'bold',
-    fontSize:18
-  }
+    fontWeight: "bold",
+    marginVertical: 10,
+  },
+  buttonCSModal: {
+    padding: 10,
+    display: "flex",
+    justifyContent: "center",
+    margin: "auto",
+  },
+  buttonTSModal: {
+    color: secondaryColor,
+    fontWeight: "bold",
+    fontSize: 18,
+  },
 });
+
+Lobby.protoType = {
+  goLobby: PropTypes.func,
+};
+
+export default Lobby;

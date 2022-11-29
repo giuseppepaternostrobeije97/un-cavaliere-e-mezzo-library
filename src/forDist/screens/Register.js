@@ -49,16 +49,16 @@ const Register = (props) => {
       };
 
       //api
-      const response = registrationApi(user);
+      // const response = registrationApi(user);
 
-      //controllo response
-      if (response.status === 200) {
-        console.log("Login");
+      // //controllo response
+      // if (response.status === 200) {
+      //   console.log("Login");
 
-        if (!!props.callbackRegister) {
-          props.callbackRegister();
-        }
+      if (!!props.callbackRegister) {
+        props.callbackRegister();
       }
+      // }
     }
 
     console.log("Register");

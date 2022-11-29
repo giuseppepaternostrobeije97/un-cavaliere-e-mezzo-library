@@ -6,10 +6,12 @@ import CardPlayer from "../components/cardPlayer/CardPlayer";
 import shield from "../assets/shield.png";
 import CustomButton from "../components/customButton/CustomButton";
 
+import PropTypes from "prop-types";
+
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
-const Arena = () => {
+const Arena = (props) => {
   //web socket
   const ws = new WebSocket(
     "wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/"
@@ -24,6 +26,7 @@ const Arena = () => {
   const play = () => {
     ws.send("play");
     console.log("play");
+    props.game();
   };
 
   return (
@@ -106,5 +109,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
+
+Arena.protoType = {
+  game: PropTypes.func,
+};
 
 export default Arena;

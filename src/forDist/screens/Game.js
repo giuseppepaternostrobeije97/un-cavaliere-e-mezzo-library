@@ -4,6 +4,8 @@ import cards from "../assets/CARTE-NAPOLETANE.png";
 
 import CustomButton from "../components/customButton/CustomButton";
 
+import PropTypes from "prop-types";
+
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
