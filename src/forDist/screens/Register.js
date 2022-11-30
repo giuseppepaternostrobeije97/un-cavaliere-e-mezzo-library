@@ -48,7 +48,7 @@ const Register = (props) => {
       //creazione oggetto da inviare
       let user = {
         email: email,
-        userName: name,
+        username: name,
         password: password,
       };
 
