@@ -6,5 +6,5 @@ export async function createLobby() {
 }
 
 export async function putLobby(idLobby) {
-  return await postApi(`${APIROUTES.lobby}${idLobby}`);
+  return await postApi(`${APIROUTES.lobby}/${idLobby}`);
 }

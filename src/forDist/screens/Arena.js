@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View, Image } from "react-native";
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 //components
 import CardPlayer from "../components/cardPlayer/CardPlayer";
 //image
@@ -12,16 +12,49 @@ const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Arena = (props) => {
-  //web socket
+  const [state, setState] = useState({
+    lobby: props.lobby,
+  });
   const ws = new WebSocket(
     "ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws"
   );
-  ws.onopen = (event) => {
-    console.log("Connessione");
-  };
-  ws.onmessage = function (event) {
-    console.log(event);
-  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  function getData() {
+    let lobby = null;
+    //web socket
+    ws.onopen = () => {
+      console.log("CONNECTED");
+    };
+    ws.onmessage = (event) => {
+      const obj = JSON.parse(event.data);
+      console.log(obj);
+      if (obj.hasOwnProperty("idLobby")) {
+        lobby = obj;
+        setState({
+          ...state,
+          lobby: lobby,
+        });
+      }
+    };
+    if (lobby != null && ws != null) {
+      const message = {
+        user_id: lobby[0].users.id,
+        method: "connectLobby",
+      };
+      sendMessage(message);
+    }
+  }
+
+  //invio di messaggi in stringhe
+  function sendMessage(message) {
+    setTimeout(() => {
+      ws.send(JSON.stringify(message));
+    }, 200);
+  }
 
   const play = () => {
     ws.send("play");
