@@ -162,9 +162,10 @@ const styles = StyleSheet.create({
   InputCss: {
     width: "48%",
     height: "100%",
-    backgroundColor: "#77523BCF",
+    backgroundColor: secondaryColor,
     padding: 20,
     fontSize: 25,
+    borderRadius:5,
     color: "#fff",
   },
   titleContainer: {
