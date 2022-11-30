@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var APIROUTES = {
   login: "signin",
-  registration: "user/registration"
+  registration: "user/registration",
+  user: "getuser/",
+  leaderBoard: "leaderboard"
 };
 var _default = APIROUTES;
 exports.default = _default;
