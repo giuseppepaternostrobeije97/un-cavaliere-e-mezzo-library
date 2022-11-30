@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import React, { useRef } from "react";
 import CustomButton from "../components/customButton/CustomButton";
 import CustomInput from "../components/customInput/CustomInput";
+
+import { Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //image
 import loginImage from "../assets/knight4.png";
 //api
@@ -42,13 +45,27 @@ const Login = (props) => {
       //api
       const response = await signinApi(user);
 
-      // //controllo response
-      // if (response.status === 200) {
-      console.log("Login");
-      if (!!props.callbackLogin) {
-        props.callbackLogin();
+      console.log(response);
+      //controllo response
+      if (response.status === 200) {
+        if (Platform.OS === "web") {
+          // salvo l'utente attualmente loggato
+          localStorage.setItem("currentUser", JSON.stringify(response.data));
+        } else {
+          try {
+            const JSONnewUsers = JSON.stringify(response.data);
+            // salvo l'utente corrente
+            await AsyncStorage.setItem("@currentUser", JSONnewUsers);
+          } catch (e) {
+            console.log(e);
+          }
+        }
+
+        console.log("Login");
+        if (!!props.callbackLogin) {
+          props.callbackLogin();
+        }
       }
-      // }
     }
   }
 

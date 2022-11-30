@@ -1,16 +1,35 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import cards from "../assets/CARTE-NAPOLETANE.png";
 
 import CustomButton from "../components/customButton/CustomButton";
 
 import PropTypes from "prop-types";
+//getStorage
+import asyncLocalStorage from "../utils/async-local-storage";
 
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Game = () => {
+  const [state, setState] = useState({
+    user: {
+      id: null,
+    },
+  });
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  async function getUser() {
+    const user = await asyncLocalStorage();
+
+    setState({
+      ...state,
+      id: user.id,
+    });
+  }
   //web socket
   const ws = new WebSocket(
     "wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/"

@@ -2,10 +2,14 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import React, { useRef } from "react";
 import CustomButton from "../components/customButton/CustomButton";
 import CustomInput from "../components/customInput/CustomInput";
+
+import { Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //image
 import loginImage from "../assets/knight2.png";
 //api
 import { registrationApi } from "../services/api/registrationAPI";
+import { signinApi } from "../services/api/loginAPI";
 //function
 import checkEmptyText from "../utils/checkEmptyText";
 import checkEmailValidation from "../utils/checkEmailValidation";
@@ -21,7 +25,7 @@ const Register = (props) => {
   const refPassword = useRef(null);
   const refConfirmPassword = useRef(null);
 
-  function onClickRegister() {
+  async function onClickRegister() {
     let email = refEmail.current.value;
     let name = refName.current.value;
     let password = refPassword.current.value;
@@ -49,16 +53,33 @@ const Register = (props) => {
       };
 
       //api
-      // const response = registrationApi(user);
+      const response = await registrationApi(user);
 
       // //controllo response
-      // if (response.status === 200) {
-      //   console.log("Login");
+      if (response.status === 200) {
+        const responseLogin = await signinApi(user);
 
-      if (!!props.callbackRegister) {
-        props.callbackRegister();
+        if (responseLogin.status === 200) {
+          if (Platform.OS === "web") {
+            // salvo l'utente attualmente loggato
+            localStorage.setItem(
+              "currentUser",
+              JSON.stringify(responseLogin.data)
+            );
+          } else {
+            try {
+              const JSONnewUsers = JSON.stringify(responseLogin.data);
+              // salvo l'utente corrente
+              await AsyncStorage.setItem("@currentUser", JSONnewUsers);
+            } catch (e) {
+              console.log(e);
+            }
+          }
+          if (!!props.callbackRegister) {
+            props.callbackRegister();
+          }
+        }
       }
-      // }
     }
 
     console.log("Register");

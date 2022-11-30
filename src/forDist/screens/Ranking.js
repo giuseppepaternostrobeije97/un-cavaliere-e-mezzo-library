@@ -8,72 +8,51 @@ import {
 import React, { useEffect, useState } from "react";
 import BG from "../assets/bg.png";
 
+//api
+import { getLeaderBoardApi } from "../services/api/leaderBoardAPI";
+
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
-const testRanking = [
-  {
-    userName: "pincopallino",
-    score: 10,
-  },
-  {
-    userName: "dalla",
-    score: 13,
-  },
-  {
-    userName: "mare",
-    score: 3,
-  },
-  {
-    userName: "sole",
-    score: 6,
-  },
-  {
-    userName: "luna",
-    score: 24,
-  },
-  {
-    userName: "ghiaccio",
-    score: 23,
-  },
-  {
-    userName: "fire",
-    score: 7,
-  },
-  {
-    userName: "flame",
-    score: 13,
-  },
-  {
-    userName: "test",
-    score: 15,
-  },
-];
 
 const Ranking = () => {
-
   const [allUsers, setUsers] = useState([]);
 
   useEffect(() => {
-    testRanking.sort((a, b) => (a.score > b.score ? -1 : 1));
-    setUsers(testRanking);
-    console.log(allUsers)
-  },[]);
+    getData();
+  }, []);
 
-  const renderItem = ({ item,index }) => {
+  const getData = async () => {
+    const response = await getLeaderBoardApi();
+
+    if (response.status === 200) {
+      let user = response.data.users;
+      user.sort((a, b) => (a.score > b.score ? -1 : 1));
+      setUsers(user);
+    }
+  };
+
+  const renderItem = ({ item, index }) => {
     return (
-      <View
-        style={styles.itemCss}
-      >
-        <Text style={{
-            color:'#fff',
-            fontWeight:'bold'
-        }}>
-            {index+1}°
+      <View style={styles.itemCss}>
+        <Text
+          style={{
+            color: "#fff",
+            fontWeight: "bold",
+          }}
+        >
+          {index + 1}°
         </Text>
-        <Text style={{ color: brandColor, fontSize: 18,fontWeight:'bold',textTransform:'uppercase' }}>
-          {item.userName}
+        <Text
+          style={{
+            color: brandColor,
+            fontSize: 18,
+            fontWeight: "bold",
+            textTransform: "uppercase",
+          }}
+        >
+          {item.username}
         </Text>
-        <Text style={{ color: brandColor, fontSize: 18,fontWeight:'bold' }}>
+        <Text style={{ color: brandColor, fontSize: 18, fontWeight: "bold" }}>
           {item.score}
         </Text>
       </View>
@@ -97,10 +76,10 @@ const Ranking = () => {
       </View>
       <View style={styles.rankingView}>
         <FlatList
-            style={{ height: "100%" }}
-            data={allUsers}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
+          style={{ height: "100%" }}
+          data={allUsers}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
         />
       </View>
     </View>
@@ -137,29 +116,29 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  rankingView:{
-    height:'90%',
-    width:'100%',
-    display:'flex',
-    zIndex:3,
-    alignItems:'center',
-    paddingVertical:20
+  rankingView: {
+    height: "90%",
+    width: "100%",
+    display: "flex",
+    zIndex: 3,
+    alignItems: "center",
+    paddingVertical: 20,
   },
-  itemCss:{
+  itemCss: {
     display: "flex",
     justifyContent: "space-between",
     flexDirection: "row",
     width: 400,
     padding: 10,
-    backgroundColor:secondaryColor,
-    marginVertical:10,
-    marginHorizontal:15,
-    shadowColor: '#0000009c',
+    backgroundColor: secondaryColor,
+    marginVertical: 10,
+    marginHorizontal: 15,
+    shadowColor: "#0000009c",
     shadowRadius: 7,
     shadowOffset: {
       height: 7,
       width: 0,
     },
-    borderRadius:5
-  }
+    borderRadius: 5,
+  },
 });
