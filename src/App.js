@@ -8,12 +8,12 @@ import Ranking from "./forDist/screens/Ranking";
 function App() {
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
+      {/* <Login /> */}
       {/* <Register /> */}
-      {/* da sitemare in versione desk */}
       <Lobby/>
       {/* <Game/> */}
       {/* <Arena/> */}
-      {/* <Ranking/> */}
+      {/* <Ranking /> */}
     </div>
   );
 }

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 // react
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // media
 import BG from "../assets/bg.png";
 import CASTLE from "../assets/castle.png";
@@ -21,30 +21,42 @@ import rankList from "../assets/rank-list.png";
 // import
 import ModalComponent from "../components/customModal/ModalComponent";
 import CustomButton from "../components/customButton/CustomButton";
-import CustomInput from "../components/customInput/CustomInput";
+//api
+import { getUserApi } from "../services/api/userApi";
+//getStorage
+import asyncLocalStorage from "../utils/async-local-storage";
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
-// mokup
-const userName = "pincopallo";
-const score = 13;
-const arenasList = [
-  "arena1",
-  "arena2",
-  "arena3",
-  "arena1",
-  "arena2",
-  "arena3",
-  "arena1",
-  "arena2",
-  "arena3",
-];
 
 const Lobby = (props) => {
   const [state, setState] = useState({
     areanasModalList: false,
     createArenasModal: false,
+    user: {
+      name: "",
+      score: 0,
+    },
   });
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const user = await asyncLocalStorage();
+    const response = await getUserApi(user.id);
+
+    console.log(response);
+    if (response.status === 200) {
+      setState({
+        ...state,
+        user: {
+          name: response.data.username,
+          score: response.data.score,
+        },
+      });
+    }
+  };
 
   const menageModalNew = () => {
     console.log("change state");
@@ -73,7 +85,7 @@ const Lobby = (props) => {
       {/* userSection */}
       <View className="userSection" style={styles.userSection}>
         <View style={styles.userName}>
-          <Text style={styles.normalText}>{userName}</Text>
+          <Text style={styles.normalText}>{state?.user.name}</Text>
         </View>
         <View style={styles.score}>
           {/* <Text style={styles.normalText}>SCORE</Text> */}
@@ -88,7 +100,7 @@ const Lobby = (props) => {
             }}
           />
           <View style={styles.uiLine}></View>
-          <Text style={styles.normalText}>{score}</Text>
+          <Text style={styles.normalText}>{state?.user.score}</Text>
         </View>
         <View style={styles.ranking}>
           <Image

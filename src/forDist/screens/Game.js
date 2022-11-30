@@ -1,37 +1,109 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import cards from "../assets/CARTE-NAPOLETANE.png";
 
 import CustomButton from "../components/customButton/CustomButton";
 
 import PropTypes from "prop-types";
+//getStorage
+import asyncLocalStorage from "../utils/async-local-storage";
 
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Game = () => {
+  const [state, setState] = useState({
+    user: {
+      id: null,
+    },
+  });
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  async function getUser() {
+    const user = await asyncLocalStorage();
+
+    setState({
+      ...state,
+      id: user.id,
+    });
+  }
   //web socket
   const ws = new WebSocket(
     "wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/"
   );
   ws.onopen = (event) => {
-    console.log("Connessione");
+    console.log("CONNECTED");
   };
   ws.onmessage = function (event) {
     console.log(event);
   };
 
-  const stop = () => {
-    ws.send("stop");
+  //invio di messaggi in stringhe
+  function sendMessage(message) {
+    setTimeout(() => {
+      ws.send(JSON.stringify(message));
+    }, 200);
+  }
 
-    console.log("stop");
+  //controllo ad ogni azione se la partita è finita
+  function checkEndMatch() {
+    console.log("check end match...");
+    const message = {
+      user_id: this.user.id,
+      method: "checkEndMatch",
+    };
+    sendMessage(message);
+  }
+
+  //richiesta di passare e stare bene con le carte
+  const stop = () => {
+    const message = {
+      user_id: this.user.id,
+      method: "stopPlaying",
+    };
+    sendMessage(message);
+
+    setTimeout(() => {
+      this.endMatch();
+    }, 100);
   };
 
+  //richiesta di un' altra carta
   const card = () => {
-    ws.send("card");
+    const message = {
+      user_id: this.user.id,
+      method: "requestCard",
+    };
+    sendMessage(message);
 
-    console.log("card");
+    setTimeout(() => {
+      checkEndMatch();
+    }, 100);
+  };
+
+  //utente x esce dalla partita
+  const quitMatch = () => {
+    const message = {
+      user_id: this.user.id,
+      method: "quitMatch",
+    };
+    sendMessage(message);
+    setTimeout(() => {
+      checkEndMatch();
+      disconnect();
+    }, 100);
+  };
+
+  const disconnect = () => {
+    //if (this.ws !== null) {
+    this.ws.close();
+    //  this.lobby = null;
+    //  this.match = null;
+    //  this.connectionEstablished = false;
+    //}
   };
 
   return (

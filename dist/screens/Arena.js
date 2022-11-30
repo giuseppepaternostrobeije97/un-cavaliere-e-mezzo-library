@@ -101,7 +101,7 @@ var styles = _reactNative.StyleSheet.create({
   },
   containerCard: {
     height: "20%",
-    margin: 15,
+    padding: 15,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
