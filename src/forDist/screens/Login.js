@@ -19,9 +19,11 @@ const Login = (props) => {
   const refEmail = useRef(null);
   const refPassword = useRef(null);
 
-  function onClickLogin() {
+  async function onClickLogin() {
     let email = refEmail.current.value;
     let password = refPassword.current.value;
+
+    console.log(refEmail);
 
     //controllo campi vuoti
     let emptyEmail = checkEmptyText(email);
@@ -38,7 +40,7 @@ const Login = (props) => {
       };
 
       //api
-      // const response = signinApi(user);
+      const response = await signinApi(user);
 
       // //controllo response
       // if (response.status === 200) {
