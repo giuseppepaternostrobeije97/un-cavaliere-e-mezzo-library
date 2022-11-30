@@ -10,10 +10,10 @@ function App() {
     <div style={{ height: "100vh", width: "100vw" }}>
       {/* <Register /> */}
       {/* da sitemare in versione desk */}
-      {/* <Lobby/> */}
+      <Lobby/>
       {/* <Game/> */}
       {/* <Arena/> */}
-      <Ranking/>
+      {/* <Ranking/> */}
     </div>
   );
 }

@@ -97,7 +97,7 @@ const Ranking = () => {
       </View>
       <View style={styles.rankingView}>
         <FlatList
-            style={{ height: "100%" }}
+            style={{ height: "100%" ,width:'90%'}}
             data={allUsers}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
@@ -143,13 +143,15 @@ const styles = StyleSheet.create({
     display:'flex',
     zIndex:3,
     alignItems:'center',
-    paddingVertical:20
+    marginHorizontal:'auto',
+    paddingVertical:20,
+    maxWidth:500
   },
   itemCss:{
     display: "flex",
     justifyContent: "space-between",
     flexDirection: "row",
-    width: 400,
+    width: '90%',
     padding: 10,
     backgroundColor:secondaryColor,
     marginVertical:10,

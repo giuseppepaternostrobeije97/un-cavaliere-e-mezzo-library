@@ -6,7 +6,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
-  FlatList,
+  TextInput,
 } from "react-native";
 import PropTypes from "prop-types";
 // react
@@ -14,9 +14,14 @@ import React, { useState } from "react";
 // media
 import BG from "../assets/bg.png";
 import CASTLE from "../assets/castle.png";
+import trophy from "../assets/trophy.png";
+import bgL from "../assets/lobbyBg.png";
+import rankList from "../assets/rank-list.png";
+
 // import
 import ModalComponent from "../components/customModal/ModalComponent";
 import CustomButton from "../components/customButton/CustomButton";
+import CustomInput from "../components/customInput/CustomInput";
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
@@ -41,13 +46,6 @@ const Lobby = (props) => {
     createArenasModal: false,
   });
 
-  const menageModalList = () => {
-    setState({
-      ...state,
-      areanasModalList: !state.areanasModalList,
-    });
-  };
-
   const menageModalNew = () => {
     console.log("change state");
     setState({
@@ -55,42 +53,9 @@ const Lobby = (props) => {
       createArenasModal: !state.createArenasModal,
     });
   };
+
   const goLobby = () => {
     props.goLobby();
-  };
-
-  const keyExtractor = (item, idx) => {
-    return item?.id?.toString() || idx?.toString();
-  };
-
-  const renderItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={goLobby}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "row",
-          width: "80%",
-          padding: 10,
-          backgroundColor: secondaryColor,
-          marginVertical: 10,
-          marginHorizontal: "auto",
-          borderRadius: 5,
-        }}
-      >
-        <Text
-          style={{
-            color: brandColor,
-            fontSize: 18,
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          {item}
-        </Text>
-      </TouchableOpacity>
-    );
   };
 
   return (
@@ -111,20 +76,47 @@ const Lobby = (props) => {
           <Text style={styles.normalText}>{userName}</Text>
         </View>
         <View style={styles.score}>
-          <Text style={styles.normalText}>SCORE</Text>
+          {/* <Text style={styles.normalText}>SCORE</Text> */}
+          <Image
+            source={trophy}
+            resizeMode={"contain"}
+            style={{
+              height: "50%",
+              width: "100%",
+              zIndex: 3,
+              marginVertical: 5,
+            }}
+          />
           <View style={styles.uiLine}></View>
           <Text style={styles.normalText}>{score}</Text>
         </View>
+        <View style={styles.ranking}>
+          <Image
+            source={rankList}
+            resizeMode={"contain"}
+            style={{
+              height: "80%",
+              width: "80%",
+              zIndex: 3,
+              marginVertical: 5,
+            }}
+          />
+        </View>
       </View>
       {/* arenaListSection */}
-      <TouchableOpacity
-        onPress={menageModalList}
-        style={styles.arenasListConainter}
-      >
-        <View style={styles.arenasList}>
-          <Text style={styles.sectionTitle}>LISTA ARENE</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.searchArenaContainer}>
+        <TextInput
+          style={styles.InputCss}
+          placeholderTextColor={"white"}
+          placeholder={"Numero arena"}
+        />
+        <TouchableOpacity
+          onPress={menageModalNew}
+          style={styles.searcArenasBtn}
+        >
+          <Text style={styles.sectionTitleSearch}>CERCA ARENA</Text>
+        </TouchableOpacity>
+      </View>
       {/* create new arena */}
       <TouchableOpacity
         onPress={menageModalNew}
@@ -136,24 +128,6 @@ const Lobby = (props) => {
       </TouchableOpacity>
       {/* image castle */}
       <Image source={CASTLE} resizeMode={"cover"} style={styles.imageCastle} />
-      {/* modale lista arene */}
-      <ModalComponent isOpen={state.areanasModalList}>
-        <View style={styles.modalList}>
-          <Text style={styles.titleModal}>LISTA ARENE</Text>
-          <FlatList
-            style={{ height: "100%" }}
-            data={arenasList}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-          />
-          <CustomButton
-            onClickCallback={menageModalList}
-            label={"CHIUDI"}
-            buttonContainerStyle={styles.buttonCSModal}
-            buttonTextStyle={styles.buttonTSModal}
-          />
-        </View>
-      </ModalComponent>
       {/* modale crea nuova arena */}
       <ModalComponent isOpen={state.createArenasModal}>
         <View style={styles.modalList}>
@@ -177,6 +151,7 @@ const styles = StyleSheet.create({
     position: "relative",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
   },
   bgImage: {
     height: "100%",
@@ -184,8 +159,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 1,
   },
+  InputCss: {
+    width: "48%",
+    height: "100%",
+    backgroundColor: "#77523BCF",
+    padding: 20,
+    fontSize: 25,
+    color: "#fff",
+  },
   titleContainer: {
-    backgroundColor: secondaryColor,
     width: "100%",
     height: "10%",
     zIndex: 2,
@@ -194,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 30,
+    fontSize: 40,
     color: "#fff",
     fontWeight: "bold",
   },
@@ -204,6 +186,7 @@ const styles = StyleSheet.create({
     left: 0,
     zIndex: 4,
     width: "100%",
+    maxWidth: 700,
     height: "40%",
     shadowColor: brandColor,
     shadowRadius: 10,
@@ -217,11 +200,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     height: "20%",
+    width: "100%",
     zIndex: 3,
     padding: 20,
+    maxWidth: 800,
   },
   userName: {
-    width: "75%",
+    position: "relative",
+    width: "60%",
     height: "100%",
     backgroundColor: secondaryColor,
     borderRadius: 5,
@@ -239,11 +225,31 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
   },
+  ranking: {
+    width: "15%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: 5,
+    alignItems: "center",
+    backgroundColor: secondaryColor,
+  },
   arenasListConainter: {
     height: "20%",
     zIndex: 3,
     padding: 20,
     width: "100%",
+    maxWidth: 800,
+  },
+  searchArenaContainer: {
+    height: "20%",
+    zIndex: 3,
+    padding: 20,
+    width: "100%",
+    maxWidth: 800,
+    display: "flex",
+    flexDirection:'row',
+    justifyContent: "space-between",
   },
   arenasList: {
     backgroundColor: secondaryColor,
@@ -258,16 +264,23 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     textTransform: "uppercase",
+    zIndex: 5,
   },
   uiLine: {
-    backgroundColor: "#fff",
-    height: 2,
+    backgroundColor: brandColor,
+    height: 8,
     width: "100%",
   },
   sectionTitle: {
     color: "#fff",
     fontSize: 30,
     fontWeight: "bold",
+  },
+  sectionTitleSearch:{
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign:'center'
   },
   modalList: {
     width: "80%",
@@ -281,6 +294,15 @@ const styles = StyleSheet.create({
     color: secondaryColor,
     fontWeight: "bold",
     marginVertical: 10,
+  },
+  searcArenasBtn: {
+    width: "48%",
+    height: "100%",
+    backgroundColor: secondaryColor,
+    borderRadius: 5,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonCSModal: {
     padding: 10,
