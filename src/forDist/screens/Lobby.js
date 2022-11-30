@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 // react
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // media
 import BG from "../assets/bg.png";
 import CASTLE from "../assets/castle.png";
@@ -23,6 +23,7 @@ import ModalComponent from "../components/customModal/ModalComponent";
 import CustomButton from "../components/customButton/CustomButton";
 //api
 import { getUserApi } from "../services/api/userApi";
+import { createLobby, putLobby } from "../services/api/lobbyAPI";
 //getStorage
 import asyncLocalStorage from "../utils/async-local-storage";
 // colori
@@ -38,6 +39,8 @@ const Lobby = (props) => {
       score: 0,
     },
   });
+
+  const inputRef = useRef(null);
   useEffect(() => {
     getData();
   }, []);
@@ -66,9 +69,22 @@ const Lobby = (props) => {
     });
   };
 
-  const goLobby = () => {
-    props.goLobby();
-  };
+  async function searhArena() {
+    const idLobby = inputRef.current.value;
+    const response = await putLobby(idLobby);
+    if (response === 200) {
+      let lobby = response.data;
+      props.goLobby(lobby);
+    }
+  }
+
+  async function createArena() {
+    const response = await createLobby();
+    if (response === 200) {
+      let lobby = response.data;
+      props.goLobby(lobby);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -118,20 +134,18 @@ const Lobby = (props) => {
       {/* arenaListSection */}
       <View style={styles.searchArenaContainer}>
         <TextInput
+          ref={inputRef}
           style={styles.InputCss}
           placeholderTextColor={"white"}
           placeholder={"Numero arena"}
         />
-        <TouchableOpacity
-          onPress={menageModalNew}
-          style={styles.searcArenasBtn}
-        >
+        <TouchableOpacity onPress={searhArena} style={styles.searcArenasBtn}>
           <Text style={styles.sectionTitleSearch}>CERCA ARENA</Text>
         </TouchableOpacity>
       </View>
       {/* create new arena */}
       <TouchableOpacity
-        onPress={menageModalNew}
+        onPress={createArena}
         style={styles.arenasListConainter}
       >
         <View style={styles.arenasList}>
@@ -177,7 +191,7 @@ const styles = StyleSheet.create({
     backgroundColor: secondaryColor,
     padding: 20,
     fontSize: 25,
-    borderRadius:5,
+    borderRadius: 5,
     color: "#fff",
   },
   titleContainer: {
@@ -261,7 +275,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 800,
     display: "flex",
-    flexDirection:'row',
+    flexDirection: "row",
     justifyContent: "space-between",
   },
   arenasList: {
@@ -289,11 +303,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
   },
-  sectionTitleSearch:{
+  sectionTitleSearch: {
     color: "#fff",
     fontSize: 24,
     fontWeight: "bold",
-    textAlign:'center'
+    textAlign: "center",
   },
   modalList: {
     width: "80%",

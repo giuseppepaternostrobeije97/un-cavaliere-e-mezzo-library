@@ -14,7 +14,7 @@ const secondaryColor = "#77523B";
 const Arena = (props) => {
   //web socket
   const ws = new WebSocket(
-    "wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/"
+    "ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws"
   );
   ws.onopen = (event) => {
     console.log("Connessione");

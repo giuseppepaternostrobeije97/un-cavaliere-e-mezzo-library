@@ -9,8 +9,8 @@ function App() {
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
       {/* <Login /> */}
-      <Register />
-      {/* <Lobby/> */}
+      {/* <Register /> */}
+      <Lobby />
       {/* <Game/> */}
       {/* <Arena/> */}
       {/* <Ranking /> */}
