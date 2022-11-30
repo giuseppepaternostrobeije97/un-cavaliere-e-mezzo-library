@@ -1,4 +1,4 @@
-import { postApiNoAuth } from "../genericServices";
+import { postApiNoAuth } from "generic-services-un-cavaliere-e-mezzo/dist/services/genericServices";
 import APIROUTES from "./apiRoutes";
 
 export async function registrationApi(obj) {
