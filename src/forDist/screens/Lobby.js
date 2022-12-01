@@ -71,7 +71,7 @@ const Lobby = (props) => {
   async function searhArena() {
     const idLobby = inputRef.current.value;
     const response = await putLobby(idLobby);
-    if (response === 200) {
+    if (response.status === 200) {
       let lobby = response.data;
       props.goLobby(lobby);
     } else {
@@ -81,7 +81,7 @@ const Lobby = (props) => {
 
   async function createArena() {
     const response = await createLobby();
-    if (response === 200) {
+    if (response.status === 200) {
       let lobby = response.data;
       props.goLobby(lobby);
     } else {
