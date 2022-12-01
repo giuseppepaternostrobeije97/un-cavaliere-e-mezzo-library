@@ -8,7 +8,8 @@ var APIROUTES = {
   login: "signin",
   registration: "user/registration",
   user: "getuser/",
-  leaderBoard: "leaderboard"
+  leaderBoard: "leaderboard",
+  lobby: "lobby"
 };
 var _default = APIROUTES;
 exports.default = _default;

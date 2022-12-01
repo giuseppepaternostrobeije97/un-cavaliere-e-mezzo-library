@@ -16,6 +16,7 @@ var _rankList = _interopRequireDefault(require("../assets/rank-list.png"));
 var _ModalComponent = _interopRequireDefault(require("../components/customModal/ModalComponent"));
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
 var _userApi = require("../services/api/userApi");
+var _lobbyAPI = require("../services/api/lobbyAPI");
 var _asyncLocalStorage = _interopRequireDefault(require("../utils/async-local-storage"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -49,6 +50,7 @@ var Lobby = function Lobby(props) {
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
     setState = _useState2[1];
+  var inputRef = (0, _react.useRef)(null);
   (0, _react.useEffect)(function () {
     getData();
   }, []);
@@ -93,9 +95,61 @@ var Lobby = function Lobby(props) {
       createArenasModal: !state.createArenasModal
     }));
   };
-  var goLobby = function goLobby() {
-    props.goLobby();
-  };
+  function searhArena() {
+    return _searhArena.apply(this, arguments);
+  }
+  function _searhArena() {
+    _searhArena = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var idLobby, response, lobby;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              idLobby = inputRef.current.value;
+              _context2.next = 3;
+              return (0, _lobbyAPI.putLobby)(idLobby);
+            case 3:
+              response = _context2.sent;
+              if (response === 200) {
+                lobby = response.data;
+                props.goLobby(lobby);
+              }
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _searhArena.apply(this, arguments);
+  }
+  function createArena() {
+    return _createArena.apply(this, arguments);
+  }
+  function _createArena() {
+    _createArena = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var response, lobby;
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return (0, _lobbyAPI.createLobby)();
+            case 2:
+              response = _context3.sent;
+              if (response === 200) {
+                lobby = response.data;
+                props.goLobby(lobby);
+              }
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+    return _createArena.apply(this, arguments);
+  }
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.container
   }, /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
@@ -142,16 +196,17 @@ var Lobby = function Lobby(props) {
   }))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.searchArenaContainer
   }, /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
+    ref: inputRef,
     style: styles.InputCss,
     placeholderTextColor: "white",
     placeholder: "Numero arena"
   }), /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
-    onPress: menageModalNew,
+    onPress: searhArena,
     style: styles.searcArenasBtn
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.sectionTitleSearch
   }, "CERCA ARENA"))), /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
-    onPress: menageModalNew,
+    onPress: createArena,
     style: styles.arenasListConainter
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.arenasList
@@ -279,7 +334,7 @@ var styles = _reactNative.StyleSheet.create({
     width: "100%",
     maxWidth: 800,
     display: "flex",
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "space-between"
   },
   arenasList: {
@@ -311,7 +366,7 @@ var styles = _reactNative.StyleSheet.create({
     color: "#fff",
     fontSize: 24,
     fontWeight: "bold",
-    textAlign: 'center'
+    textAlign: "center"
   },
   modalList: {
     width: "80%",
