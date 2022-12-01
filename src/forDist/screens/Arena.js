@@ -57,8 +57,12 @@ const Arena = (props) => {
   }
 
   const play = () => {
-    ws.send("play");
-    console.log("play");
+    const message = {
+      user_id: this.user.id,
+      method: "startMatch",
+    };
+    sendMessage(message);
+    console.log("startMatch");
     props.game();
   };
 
