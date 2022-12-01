@@ -6,64 +6,110 @@ import CardPlayer from "../components/cardPlayer/CardPlayer";
 import shield from "../assets/shield.png";
 import CustomButton from "../components/customButton/CustomButton";
 
+//getStorage
+import asyncLocalStorage from "../utils/async-local-storage";
+//api
+import { deleteLobbyApi } from "../services/api/lobbyAPI";
+
 import PropTypes from "prop-types";
 
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
+let ws = null;
+let user = {};
 
 const Arena = (props) => {
   const [state, setState] = useState({
     lobby: props.lobby,
   });
-  const ws = new WebSocket(
-    "ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws"
-  );
 
   useEffect(() => {
     getData();
   }, []);
 
-  function getData() {
-    let lobby = null;
+  const getData = async () => {
+    let lobby = props.lobby;
+    user = await asyncLocalStorage();
     //web socket
+    ws = new WebSocket(
+      "ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws"
+    );
     ws.onopen = () => {
       console.log("CONNECTED");
     };
-    ws.onmessage = (event) => {
+    ws.onclose = () => {
+      console.log("EXIT CONNECTION");
+    };
+    ws.onmessage = function (event) {
       const obj = JSON.parse(event.data);
       console.log(obj);
       if (obj.hasOwnProperty("idLobby")) {
-        lobby = obj;
+        let lobby = obj;
         setState({
           ...state,
           lobby: lobby,
         });
+      } else {
+        console.log("vado a game");
+        ws.close();
+        props.game(obj);
       }
     };
-    if (lobby != null && ws != null) {
-      const message = {
-        user_id: lobby[0].users.id,
-        method: "connectLobby",
-      };
-      sendMessage(message);
-    }
-  }
+    ws.onerror = (event) => {
+      console.log(event);
+    };
+
+    setTimeout(() => {
+      if (lobby != null && ws != null) {
+        console.log("connectLobby");
+        const message = {
+          user_id: user.id,
+          method: "connectLobby",
+        };
+        sendMessage(message);
+      }
+    }, 1000);
+  };
 
   //invio di messaggi in stringhe
-  function sendMessage(message) {
+  const sendMessage = (message) => {
     setTimeout(() => {
       ws.send(JSON.stringify(message));
     }, 200);
-  }
+  };
+
+  const exitLobby = async () => {
+    const response = await deleteLobbyApi();
+    console.log("EXIT LOBBY", response);
+    if (response.status === 200) {
+      if (response.data.esito) {
+        if (state.lobby != null && ws != null) {
+          console.log("QUITTO");
+          const message = {
+            method: "quitLobby",
+            idLobby: state.lobby.idLobby,
+          };
+          console.log("MESSAGE", message);
+          sendMessage(message);
+        }
+        setTimeout(() => {
+          ws.close();
+        }, 1000);
+        props.exitLobby();
+      } else {
+        console.log("Cannot disconnect");
+      }
+    }
+  };
 
   const play = () => {
+    console.log("play");
     const message = {
-      user_id: this.user.id,
+      user_id: user.id,
       method: "startMatch",
     };
     sendMessage(message);
     console.log("startMatch");
-    props.game();
   };
 
   return (
@@ -92,6 +138,12 @@ const Arena = (props) => {
         buttonContainerStyle={styles.btImage}
       >
         <Image resizeMode={"contain"} style={styles.image} source={shield} />
+      </CustomButton>
+      <CustomButton
+        onClickCallback={exitLobby}
+        buttonContainerStyle={styles.btImage}
+      >
+        <Text>Exit</Text>
       </CustomButton>
 
       <View style={styles.containerCard}>

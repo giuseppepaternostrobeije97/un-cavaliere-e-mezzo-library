@@ -11,7 +11,6 @@ var _CARTENAPOLETANE = _interopRequireDefault(require("../assets/CARTE-NAPOLETAN
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _asyncLocalStorage = _interopRequireDefault(require("../utils/async-local-storage"));
-var _this = void 0;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -32,11 +31,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 // colori
 var brandColor = "#232726";
 var secondaryColor = "#77523B";
-var Game = function Game() {
+var ws = null;
+var user = {};
+var Game = function Game(props) {
+  var _state$match, _state$match$users$, _state$match2, _state$match2$users$, _state$match3, _state$match3$users$, _state$match4, _state$match4$users$;
   var _useState = (0, _react.useState)({
-      user: {
-        id: null
-      }
+      match: props.match
     }),
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
@@ -46,10 +46,9 @@ var Game = function Game() {
   }, []);
   function getUser() {
     return _getUser.apply(this, arguments);
-  } //web socket
+  } //invio di messaggi in stringhe
   function _getUser() {
     _getUser = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var user;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -58,10 +57,35 @@ var Game = function Game() {
               return (0, _asyncLocalStorage.default)();
             case 2:
               user = _context.sent;
-              setState(_objectSpread(_objectSpread({}, state), {}, {
-                id: user.id
-              }));
-            case 4:
+              //web socket
+              ws = new WebSocket("ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws");
+              ws.onopen = function () {
+                console.log("CONNECTED");
+              };
+              ws.onmessage = function (event) {
+                var obj = JSON.parse(event.data);
+                console.log("ONMESSAGE", obj);
+                // if (state.match === null) {
+                //   setState({
+                //     ...state,
+                //     match: obj,
+                //   });
+
+                //   setTimeout(() => {
+                //     requestCard();
+                //   }, 1000);
+                // } else {
+                setState(_objectSpread(_objectSpread({}, state), {}, {
+                  match: obj
+                }));
+                // }
+              };
+
+              setTimeout(function () {
+                console.log("PRIMA CARTA");
+                requestCard();
+              }, 300);
+            case 7:
             case "end":
               return _context.stop();
           }
@@ -70,15 +94,6 @@ var Game = function Game() {
     }));
     return _getUser.apply(this, arguments);
   }
-  var ws = new WebSocket("wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/");
-  ws.onopen = function (event) {
-    console.log("CONNECTED");
-  };
-  ws.onmessage = function (event) {
-    console.log(event);
-  };
-
-  //invio di messaggi in stringhe
   function sendMessage(message) {
     setTimeout(function () {
       ws.send(JSON.stringify(message));
@@ -89,7 +104,7 @@ var Game = function Game() {
   function checkEndMatch() {
     console.log("check end match...");
     var message = {
-      user_id: this.user.id,
+      user_id: user.id,
       method: "checkEndMatch"
     };
     sendMessage(message);
@@ -97,20 +112,22 @@ var Game = function Game() {
 
   //richiesta di passare e stare bene con le carte
   var stop = function stop() {
+    console.log("STO, PASSO TURNO");
     var message = {
-      user_id: _this.user.id,
+      user_id: user.id,
       method: "stopPlaying"
     };
     sendMessage(message);
     setTimeout(function () {
-      _this.endMatch();
+      checkEndMatch();
     }, 100);
   };
 
   //richiesta di un' altra carta
-  var card = function card() {
+  var requestCard = function requestCard() {
+    console.log("chiedo carta");
     var message = {
-      user_id: _this.user.id,
+      user_id: user.id,
       method: "requestCard"
     };
     sendMessage(message);
@@ -122,7 +139,7 @@ var Game = function Game() {
   //utente x esce dalla partita
   var quitMatch = function quitMatch() {
     var message = {
-      user_id: _this.user.id,
+      user_id: user.id,
       method: "quitMatch"
     };
     sendMessage(message);
@@ -132,14 +149,8 @@ var Game = function Game() {
     }, 100);
   };
   var disconnect = function disconnect() {
-    //if (this.ws !== null) {
-    _this.ws.close();
-    //  this.lobby = null;
-    //  this.match = null;
-    //  this.connectionEstablished = false;
-    //}
+    ws.close();
   };
-
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.container
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
@@ -148,7 +159,7 @@ var Game = function Game() {
     style: [styles.textUsers, {
       textAlign: "center"
     }]
-  }, "Utente UP")), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, state === null || state === void 0 ? void 0 : (_state$match = state.match) === null || _state$match === void 0 ? void 0 : (_state$match$users$ = _state$match.users[1]) === null || _state$match$users$ === void 0 ? void 0 : _state$match$users$.username)), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.gameSection
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.nameUserLeft
@@ -159,7 +170,7 @@ var Game = function Game() {
       }],
       width: "300%"
     }]
-  }, "Utente LEFT")), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, state === null || state === void 0 ? void 0 : (_state$match2 = state.match) === null || _state$match2 === void 0 ? void 0 : (_state$match2$users$ = _state$match2.users[2]) === null || _state$match2$users$ === void 0 ? void 0 : _state$match2$users$.username)), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.tableGame
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserTopBottom
@@ -183,7 +194,7 @@ var Game = function Game() {
       }],
       width: "300%"
     }]
-  }, "Utente RIGTH"))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, state === null || state === void 0 ? void 0 : (_state$match3 = state.match) === null || _state$match3 === void 0 ? void 0 : (_state$match3$users$ = _state$match3.users[3]) === null || _state$match3$users$ === void 0 ? void 0 : _state$match3$users$.username))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.nameUser
   }, /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
     onClickCallback: stop,
@@ -194,9 +205,16 @@ var Game = function Game() {
     buttonContainerStyle: styles.btStop
   }), /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.textUsers
-  }, "Utente"), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
-    onClickCallback: card,
+  }, state === null || state === void 0 ? void 0 : (_state$match4 = state.match) === null || _state$match4 === void 0 ? void 0 : (_state$match4$users$ = _state$match4.users[0]) === null || _state$match4$users$ === void 0 ? void 0 : _state$match4$users$.username), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
+    onClickCallback: requestCard,
     label: "CARTA",
+    buttonTextStyle: [styles.btText, {
+      color: secondaryColor
+    }],
+    buttonContainerStyle: styles.btCard
+  }), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
+    onClickCallback: quitMatch,
+    label: "quitMatch",
     buttonTextStyle: [styles.btText, {
       color: secondaryColor
     }],

@@ -11,7 +11,6 @@ var _react = _interopRequireWildcard(require("react"));
 var _bg = _interopRequireDefault(require("../assets/bg.png"));
 var _castle = _interopRequireDefault(require("../assets/castle.png"));
 var _trophy = _interopRequireDefault(require("../assets/trophy.png"));
-var _lobbyBg = _interopRequireDefault(require("../assets/lobbyBg.png"));
 var _rankList = _interopRequireDefault(require("../assets/rank-list.png"));
 var _ModalComponent = _interopRequireDefault(require("../components/customModal/ModalComponent"));
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
@@ -109,7 +108,7 @@ var Lobby = function Lobby(props) {
               return (0, _lobbyAPI.putLobby)(idLobby);
             case 3:
               response = _context2.sent;
-              if (response === 200) {
+              if (response.status === 200) {
                 lobby = response.data;
                 props.goLobby(lobby);
               } else {
@@ -138,7 +137,7 @@ var Lobby = function Lobby(props) {
               return (0, _lobbyAPI.createLobby)();
             case 2:
               response = _context3.sent;
-              if (response === 200) {
+              if (response.status === 200) {
                 lobby = response.data;
                 props.goLobby(lobby);
               } else {

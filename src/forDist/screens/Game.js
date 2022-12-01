@@ -11,35 +11,44 @@ import asyncLocalStorage from "../utils/async-local-storage";
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
+let ws = null;
+let user = {};
 
-const Game = () => {
+const Game = (props) => {
   const [state, setState] = useState({
-    user: {
-      id: null,
-    },
+    match: props.match,
   });
+
   useEffect(() => {
     getUser();
   }, []);
 
   async function getUser() {
-    const user = await asyncLocalStorage();
+    user = await asyncLocalStorage();
+    //web socket
+    ws = new WebSocket(
+      "ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws"
+    );
 
-    setState({
-      ...state,
-      id: user.id,
-    });
+    ws.onopen = () => {
+      console.log("CONNECTED");
+    };
+
+    ws.onmessage = function (event) {
+      const obj = JSON.parse(event.data);
+      console.log("ONMESSAGE", obj);
+
+      setState({
+        ...state,
+        match: obj,
+      });
+    };
+
+    setTimeout(() => {
+      console.log("PRIMA CARTA");
+      requestCard();
+    }, 1000);
   }
-  //web socket
-  const ws = new WebSocket(
-    "wss://socketsbay.com/wss/v2/1/7f110bf7a02974b4295c97425c7827ee/"
-  );
-  ws.onopen = (event) => {
-    console.log("CONNECTED");
-  };
-  ws.onmessage = function (event) {
-    console.log(event);
-  };
 
   //invio di messaggi in stringhe
   function sendMessage(message) {
@@ -52,7 +61,7 @@ const Game = () => {
   function checkEndMatch() {
     console.log("check end match...");
     const message = {
-      user_id: this.user.id,
+      user_id: user.id,
       method: "checkEndMatch",
     };
     sendMessage(message);
@@ -60,23 +69,26 @@ const Game = () => {
 
   //richiesta di passare e stare bene con le carte
   const stop = () => {
+    console.log("STO, PASSO TURNO");
     const message = {
-      user_id: this.user.id,
+      user_id: user.id,
       method: "stopPlaying",
     };
     sendMessage(message);
 
     setTimeout(() => {
-      this.endMatch();
+      checkEndMatch();
     }, 100);
   };
 
   //richiesta di un' altra carta
-  const card = () => {
+  const requestCard = () => {
+    console.log("chiedo carta");
     const message = {
-      user_id: this.user.id,
+      user_id: user.id,
       method: "requestCard",
     };
+
     sendMessage(message);
 
     setTimeout(() => {
@@ -87,7 +99,7 @@ const Game = () => {
   //utente x esce dalla partita
   const quitMatch = () => {
     const message = {
-      user_id: this.user.id,
+      user_id: user.id,
       method: "quitMatch",
     };
     sendMessage(message);
@@ -98,19 +110,14 @@ const Game = () => {
   };
 
   const disconnect = () => {
-    //if (this.ws !== null) {
-    this.ws.close();
-    //  this.lobby = null;
-    //  this.match = null;
-    //  this.connectionEstablished = false;
-    //}
+    ws.close();
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.nameUserUp}>
         <Text style={[styles.textUsers, { textAlign: "center" }]}>
-          Utente UP
+          {state?.match?.users[1]?.username}
         </Text>
       </View>
       <View style={styles.gameSection}>
@@ -121,7 +128,7 @@ const Game = () => {
               { transform: [{ rotate: "-90deg" }], width: "300%" },
             ]}
           >
-            Utente LEFT
+            {state?.match?.users[2]?.username}
           </Text>
         </View>
         <View style={styles.tableGame}>
@@ -141,7 +148,7 @@ const Game = () => {
               { transform: [{ rotate: "90deg" }], width: "300%" },
             ]}
           >
-            Utente RIGTH
+            {state?.match?.users[3]?.username}
           </Text>
         </View>
       </View>
@@ -152,10 +159,16 @@ const Game = () => {
           buttonTextStyle={[styles.btText, { color: "#FFF" }]}
           buttonContainerStyle={styles.btStop}
         ></CustomButton>
-        <Text style={styles.textUsers}>Utente</Text>
+        <Text style={styles.textUsers}>{state?.match?.users[0]?.username}</Text>
         <CustomButton
-          onClickCallback={card}
+          onClickCallback={requestCard}
           label={"CARTA"}
+          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
+          buttonContainerStyle={styles.btCard}
+        ></CustomButton>
+        <CustomButton
+          onClickCallback={quitMatch}
+          label={"quitMatch"}
           buttonTextStyle={[styles.btText, { color: secondaryColor }]}
           buttonContainerStyle={styles.btCard}
         ></CustomButton>

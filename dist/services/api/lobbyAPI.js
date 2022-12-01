@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createLobby = createLobby;
+exports.deleteLobbyApi = deleteLobbyApi;
 exports.putLobby = putLobby;
 var _genericServices = require("generic-services-un-cavaliere-e-mezzo/dist/services/genericServices");
 var _apiRoutes = _interopRequireDefault(require("./apiRoutes"));
@@ -55,4 +56,26 @@ function _putLobby() {
     }, _callee2);
   }));
   return _putLobby.apply(this, arguments);
+}
+function deleteLobbyApi() {
+  return _deleteLobbyApi.apply(this, arguments);
+}
+function _deleteLobbyApi() {
+  _deleteLobbyApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return (0, _genericServices.deleteApi)("".concat(_apiRoutes.default.lobby));
+          case 2:
+            return _context3.abrupt("return", _context3.sent);
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _deleteLobbyApi.apply(this, arguments);
 }
