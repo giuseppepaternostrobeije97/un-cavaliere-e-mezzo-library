@@ -70,7 +70,7 @@ const Arena = (props) => {
     <View style={styles.container}>
       {/* titleSection */}
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>ARENA</Text>
+        <Text style={styles.title}>{`ARENA ${state?.lobby?.idLobby}`}</Text>
         <View style={{ padding: 10 }}>
           <Text style={styles.normalText}>
             Lo scontro potra' partire con un minimo di 2 cavalieri e un massimo
@@ -79,8 +79,12 @@ const Arena = (props) => {
         </View>
       </View>
       <View style={styles.containerCard}>
-        <CardPlayer />
-        <CardPlayer />
+        {!!state?.lobby?.users[0] && (
+          <CardPlayer playerName={state?.lobby?.users[0].username} />
+        )}
+        {!!state?.lobby?.users[1] && (
+          <CardPlayer playerName={state?.lobby?.users[1].username} />
+        )}
       </View>
 
       <CustomButton
@@ -91,8 +95,12 @@ const Arena = (props) => {
       </CustomButton>
 
       <View style={styles.containerCard}>
-        <CardPlayer />
-        <CardPlayer />
+        {!!state?.lobby?.users[2] && (
+          <CardPlayer playerName={state?.lobby?.users[2].username} />
+        )}
+        {!!state?.lobby?.users[3] && (
+          <CardPlayer playerName={state?.lobby?.users[3].username} />
+        )}
       </View>
     </View>
   );

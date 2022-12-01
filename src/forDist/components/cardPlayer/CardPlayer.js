@@ -33,7 +33,7 @@ const CardPlayer = (props) => {
 
   return (
     <View style={styles.continer}>
-      <Text style={styles.text}>cardPlayer</Text>
+      <Text style={styles.text}>{props.playerName}</Text>
       <Image resizeMode={"contain"} style={styles.image} source={state} />
     </View>
   );
