@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View, Image } from "react-native";
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 //components
 import CardPlayer from "../components/cardPlayer/CardPlayer";
 //image

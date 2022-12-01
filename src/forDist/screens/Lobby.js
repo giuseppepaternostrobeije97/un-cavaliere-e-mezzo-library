@@ -49,7 +49,7 @@ const Lobby = (props) => {
     const user = await asyncLocalStorage();
     const response = await getUserApi(user.id);
 
-    console.log(response);
+    console.log("USER", response);
     if (response.status === 200) {
       setState({
         ...state,
@@ -62,7 +62,6 @@ const Lobby = (props) => {
   };
 
   const menageModalNew = () => {
-    console.log("change state");
     setState({
       ...state,
       createArenasModal: !state.createArenasModal,
@@ -75,6 +74,8 @@ const Lobby = (props) => {
     if (response === 200) {
       let lobby = response.data;
       props.goLobby(lobby);
+    } else {
+      console.error("SEARCH LOBBY", response);
     }
   }
 
@@ -83,6 +84,8 @@ const Lobby = (props) => {
     if (response === 200) {
       let lobby = response.data;
       props.goLobby(lobby);
+    } else {
+      console.error("CREATE ARENA", response);
     }
   }
 
