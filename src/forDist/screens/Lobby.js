@@ -15,7 +15,6 @@ import React, { useEffect, useState } from "react";
 import BG from "../assets/bg.png";
 import CASTLE from "../assets/castle.png";
 import trophy from "../assets/trophy.png";
-import bgL from "../assets/lobbyBg.png";
 import rankList from "../assets/rank-list.png";
 
 // import
