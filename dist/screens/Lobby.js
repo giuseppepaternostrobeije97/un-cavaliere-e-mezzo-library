@@ -69,7 +69,7 @@ var Lobby = function Lobby(props) {
               return (0, _userApi.getUserApi)(user.id);
             case 5:
               response = _context.sent;
-              console.log(response);
+              console.log("USER", response);
               if (response.status === 200) {
                 setState(_objectSpread(_objectSpread({}, state), {}, {
                   user: {
@@ -90,7 +90,6 @@ var Lobby = function Lobby(props) {
     };
   }();
   var menageModalNew = function menageModalNew() {
-    console.log("change state");
     setState(_objectSpread(_objectSpread({}, state), {}, {
       createArenasModal: !state.createArenasModal
     }));
@@ -113,6 +112,8 @@ var Lobby = function Lobby(props) {
               if (response === 200) {
                 lobby = response.data;
                 props.goLobby(lobby);
+              } else {
+                console.error("SEARCH LOBBY", response);
               }
             case 5:
             case "end":
@@ -140,6 +141,8 @@ var Lobby = function Lobby(props) {
               if (response === 200) {
                 lobby = response.data;
                 props.goLobby(lobby);
+              } else {
+                console.error("CREATE ARENA", response);
               }
             case 4:
             case "end":

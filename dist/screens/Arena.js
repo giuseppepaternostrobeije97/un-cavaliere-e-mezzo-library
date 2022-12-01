@@ -11,6 +11,7 @@ var _CardPlayer = _interopRequireDefault(require("../components/cardPlayer/CardP
 var _shield = _interopRequireDefault(require("../assets/shield.png"));
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
+var _this = void 0;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -28,6 +29,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var brandColor = "#232726";
 var secondaryColor = "#77523B";
 var Arena = function Arena(props) {
+  var _state$lobby, _state$lobby2, _state$lobby3, _state$lobby4, _state$lobby5, _state$lobby6, _state$lobby7, _state$lobby8, _state$lobby9;
   var _useState = (0, _react.useState)({
       lobby: props.lobby
     }),
@@ -70,8 +72,12 @@ var Arena = function Arena(props) {
     }, 200);
   }
   var play = function play() {
-    ws.send("play");
-    console.log("play");
+    var message = {
+      user_id: _this.user.id,
+      method: "startMatch"
+    };
+    sendMessage(message);
+    console.log("startMatch");
     props.game();
   };
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
@@ -80,7 +86,7 @@ var Arena = function Arena(props) {
     style: styles.titleContainer
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.title
-  }, "ARENA"), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, "ARENA ".concat(state === null || state === void 0 ? void 0 : (_state$lobby = state.lobby) === null || _state$lobby === void 0 ? void 0 : _state$lobby.idLobby)), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: {
       padding: 10
     }
@@ -88,7 +94,11 @@ var Arena = function Arena(props) {
     style: styles.normalText
   }, "Lo scontro potra' partire con un minimo di 2 cavalieri e un massimo di 4"))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.containerCard
-  }, /*#__PURE__*/_react.default.createElement(_CardPlayer.default, null), /*#__PURE__*/_react.default.createElement(_CardPlayer.default, null)), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
+  }, !!(state !== null && state !== void 0 && (_state$lobby2 = state.lobby) !== null && _state$lobby2 !== void 0 && _state$lobby2.users[0]) && /*#__PURE__*/_react.default.createElement(_CardPlayer.default, {
+    playerName: state === null || state === void 0 ? void 0 : (_state$lobby3 = state.lobby) === null || _state$lobby3 === void 0 ? void 0 : _state$lobby3.users[0].username
+  }), !!(state !== null && state !== void 0 && (_state$lobby4 = state.lobby) !== null && _state$lobby4 !== void 0 && _state$lobby4.users[1]) && /*#__PURE__*/_react.default.createElement(_CardPlayer.default, {
+    playerName: state === null || state === void 0 ? void 0 : (_state$lobby5 = state.lobby) === null || _state$lobby5 === void 0 ? void 0 : _state$lobby5.users[1].username
+  })), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
     onClickCallback: play,
     buttonContainerStyle: styles.btImage
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Image, {
@@ -97,7 +107,11 @@ var Arena = function Arena(props) {
     source: _shield.default
   })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.containerCard
-  }, /*#__PURE__*/_react.default.createElement(_CardPlayer.default, null), /*#__PURE__*/_react.default.createElement(_CardPlayer.default, null)));
+  }, !!(state !== null && state !== void 0 && (_state$lobby6 = state.lobby) !== null && _state$lobby6 !== void 0 && _state$lobby6.users[2]) && /*#__PURE__*/_react.default.createElement(_CardPlayer.default, {
+    playerName: state === null || state === void 0 ? void 0 : (_state$lobby7 = state.lobby) === null || _state$lobby7 === void 0 ? void 0 : _state$lobby7.users[2].username
+  }), !!(state !== null && state !== void 0 && (_state$lobby8 = state.lobby) !== null && _state$lobby8 !== void 0 && _state$lobby8.users[3]) && /*#__PURE__*/_react.default.createElement(_CardPlayer.default, {
+    playerName: state === null || state === void 0 ? void 0 : (_state$lobby9 = state.lobby) === null || _state$lobby9 === void 0 ? void 0 : _state$lobby9.users[3].username
+  })));
 };
 var styles = _reactNative.StyleSheet.create({
   container: {

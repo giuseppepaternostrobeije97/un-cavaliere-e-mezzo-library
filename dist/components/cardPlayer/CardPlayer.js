@@ -40,7 +40,7 @@ var CardPlayer = function CardPlayer(props) {
     style: styles.continer
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.text
-  }, "cardPlayer"), /*#__PURE__*/_react.default.createElement(_reactNative.Image, {
+  }, props.playerName), /*#__PURE__*/_react.default.createElement(_reactNative.Image, {
     resizeMode: "contain",
     style: styles.image,
     source: state

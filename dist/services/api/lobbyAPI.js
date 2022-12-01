@@ -44,7 +44,7 @@ function _putLobby() {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return (0, _genericServices.postApi)("".concat(_apiRoutes.default.lobby, "/").concat(idLobby));
+            return (0, _genericServices.putApi)("".concat(_apiRoutes.default.lobby, "/").concat(idLobby));
           case 2:
             return _context2.abrupt("return", _context2.sent);
           case 3:
