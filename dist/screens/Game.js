@@ -12,6 +12,7 @@ var _CustomButton = _interopRequireDefault(require("../components/customButton/C
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _asyncLocalStorage = _interopRequireDefault(require("../utils/async-local-storage"));
 var _reactNativeWeb = require("react-native-web");
+var _reactResponsive = require("react-responsive");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -34,8 +35,21 @@ var brandColor = "#232726";
 var secondaryColor = "#77523B";
 var ws = null;
 var user = {};
+
+//mokup
+var mokupCards = [{
+  figure: "NUMBER",
+  seed: "DENARI",
+  value: "2",
+  url: "/static/media/axe2.715940f72c16388e4b63.png"
+}, {
+  figure: "NUMBER",
+  seed: "DENARI",
+  value: "7",
+  url: "/static/media/axe5.3fccba33faecf06375ce.png"
+}];
 var Game = function Game(props) {
-  var _state$match, _state$match$users$, _state$match2, _state$match2$users$, _state$match3, _state$match3$hands$, _state$match4, _state$match4$hands$, _state$match5, _state$match5$hands$, _state$match6, _state$match6$hands$, _state$match7, _state$match7$hands$, _state$match8, _state$match8$hands$, _state$match9, _state$match9$hands$, _state$match10, _state$match10$hands$, _state$match11, _state$match11$users$, _state$match12, _state$match12$users$;
+  var _state$match, _state$match$users$, _state$match2, _state$match2$users$, _state$match3, _state$match3$hands$, _state$match4, _state$match4$hands$, _state$match5, _state$match5$hands$, _state$match6, _state$match6$hands$, _state$match7, _state$match7$users$, _state$match8, _state$match8$users$;
   var _useState = (0, _react.useState)({
       match: props.match,
       turn: false
@@ -43,6 +57,12 @@ var Game = function Game(props) {
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
     setState = _useState2[1];
+  var isMobile = (0, _reactResponsive.useMediaQuery)({
+    maxWidth: 991
+  });
+  var isDesktop = (0, _reactResponsive.useMediaQuery)({
+    minWidth: 992
+  });
   (0, _react.useEffect)(function () {
     getUser();
   }, []);
@@ -172,8 +192,8 @@ var Game = function Game(props) {
       resizeMode: "contain",
       source: item.url,
       style: {
-        height: 100,
-        width: 100
+        height: isDesktop ? 100 : 50,
+        width: isDesktop ? 100 : 50
       }
     });
   };
@@ -231,17 +251,25 @@ var Game = function Game(props) {
       color: "#FFF"
     }
   }, state === null || state === void 0 ? void 0 : (_state$match3 = state.match) === null || _state$match3 === void 0 ? void 0 : (_state$match3$hands$ = _state$match3.hands[1]) === null || _state$match3$hands$ === void 0 ? void 0 : _state$match3$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
-    horizontal: true,
-    style: {
+    contentContainerStyle: {
+      justifyContent: "center",
+      alignItems: "flex-start",
       height: "90%",
       width: "100%"
     },
-    data: state === null || state === void 0 ? void 0 : (_state$match4 = state.match) === null || _state$match4 === void 0 ? void 0 : (_state$match4$hands$ = _state$match4.hands[1]) === null || _state$match4$hands$ === void 0 ? void 0 : _state$match4$hands$.cards,
+    horizontal: true
+    //data={state?.match?.hands[1]?.cards}
+    ,
+    data: mokupCards,
     renderItem: renderItem
   })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.middleCardSection
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
-    style: styles.cardUserMiddle
+    style: [styles.cardUserMiddle, {
+      transform: [{
+        rotate: "90deg"
+      }]
+    }]
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: {
       textAlign: "center",
@@ -249,16 +277,24 @@ var Game = function Game(props) {
       margin: 5,
       color: "#FFF"
     }
-  }, state === null || state === void 0 ? void 0 : (_state$match5 = state.match) === null || _state$match5 === void 0 ? void 0 : (_state$match5$hands$ = _state$match5.hands[2]) === null || _state$match5$hands$ === void 0 ? void 0 : _state$match5$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
-    horizontal: true,
-    style: {
+  }, state === null || state === void 0 ? void 0 : (_state$match4 = state.match) === null || _state$match4 === void 0 ? void 0 : (_state$match4$hands$ = _state$match4.hands[2]) === null || _state$match4$hands$ === void 0 ? void 0 : _state$match4$hands$.cardValue, " asdasdad"), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+    contentContainerStyle: {
+      justifyContent: "center",
+      alignItems: "flex-end",
       height: "90%",
       width: "100%"
     },
-    data: state === null || state === void 0 ? void 0 : (_state$match6 = state.match) === null || _state$match6 === void 0 ? void 0 : (_state$match6$hands$ = _state$match6.hands[2]) === null || _state$match6$hands$ === void 0 ? void 0 : _state$match6$hands$.cards,
+    horizontal: true,
+    data: mokupCards
+    //data={state?.match?.hands[2]?.cards}
+    ,
     renderItem: renderItem
   })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
-    style: styles.cardUserMiddle
+    style: [styles.cardUserMiddle, {
+      transform: [{
+        rotate: "-90deg"
+      }]
+    }]
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: {
       textAlign: "center",
@@ -266,13 +302,17 @@ var Game = function Game(props) {
       margin: 5,
       color: "#FFF"
     }
-  }, state === null || state === void 0 ? void 0 : (_state$match7 = state.match) === null || _state$match7 === void 0 ? void 0 : (_state$match7$hands$ = _state$match7.hands[3]) === null || _state$match7$hands$ === void 0 ? void 0 : _state$match7$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
-    horizontal: true,
-    style: {
+  }, state === null || state === void 0 ? void 0 : (_state$match5 = state.match) === null || _state$match5 === void 0 ? void 0 : (_state$match5$hands$ = _state$match5.hands[3]) === null || _state$match5$hands$ === void 0 ? void 0 : _state$match5$hands$.cardValue), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+    contentContainerStyle: {
+      justifyContent: "center",
+      alignItems: "flex-end",
       height: "90%",
       width: "100%"
     },
-    data: state === null || state === void 0 ? void 0 : (_state$match8 = state.match) === null || _state$match8 === void 0 ? void 0 : (_state$match8$hands$ = _state$match8.hands[3]) === null || _state$match8$hands$ === void 0 ? void 0 : _state$match8$hands$.cards,
+    horizontal: true,
+    data: mokupCards
+    //data={state?.match?.hands[3]?.cards}
+    ,
     renderItem: renderItem
   }))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserTopBottom
@@ -283,13 +323,18 @@ var Game = function Game(props) {
       margin: 5,
       color: "#FFF"
     }
-  }, state === null || state === void 0 ? void 0 : (_state$match9 = state.match) === null || _state$match9 === void 0 ? void 0 : (_state$match9$hands$ = _state$match9.hands[0]) === null || _state$match9$hands$ === void 0 ? void 0 : _state$match9$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
-    horizontal: true,
-    style: {
+  }, state === null || state === void 0 ? void 0 : (_state$match6 = state.match) === null || _state$match6 === void 0 ? void 0 : (_state$match6$hands$ = _state$match6.hands[0]) === null || _state$match6$hands$ === void 0 ? void 0 : _state$match6$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+    contentContainerStyle: {
+      justifyContent: "center",
+      alignItems: "flex-end",
+      marginBottom: 10,
       height: "90%",
       width: "100%"
     },
-    data: state === null || state === void 0 ? void 0 : (_state$match10 = state.match) === null || _state$match10 === void 0 ? void 0 : (_state$match10$hands$ = _state$match10.hands[0]) === null || _state$match10$hands$ === void 0 ? void 0 : _state$match10$hands$.cards,
+    horizontal: true,
+    data: mokupCards
+    //data={state?.match?.hands[0]?.cards}
+    ,
     renderItem: renderItem
   }))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.nameUserRigth
@@ -300,11 +345,11 @@ var Game = function Game(props) {
       }],
       width: "300%"
     }]
-  }, state === null || state === void 0 ? void 0 : (_state$match11 = state.match) === null || _state$match11 === void 0 ? void 0 : (_state$match11$users$ = _state$match11.users[3]) === null || _state$match11$users$ === void 0 ? void 0 : _state$match11$users$.username))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, state === null || state === void 0 ? void 0 : (_state$match7 = state.match) === null || _state$match7 === void 0 ? void 0 : (_state$match7$users$ = _state$match7.users[3]) === null || _state$match7$users$ === void 0 ? void 0 : _state$match7$users$.username))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.nameUser
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.textUsers
-  }, state === null || state === void 0 ? void 0 : (_state$match12 = state.match) === null || _state$match12 === void 0 ? void 0 : (_state$match12$users$ = _state$match12.users[0]) === null || _state$match12$users$ === void 0 ? void 0 : _state$match12$users$.username)));
+  }, state === null || state === void 0 ? void 0 : (_state$match8 = state.match) === null || _state$match8 === void 0 ? void 0 : (_state$match8$users$ = _state$match8.users[0]) === null || _state$match8$users$ === void 0 ? void 0 : _state$match8$users$.username)));
 };
 var styles = _reactNative.StyleSheet.create({
   container: {
@@ -373,7 +418,7 @@ var styles = _reactNative.StyleSheet.create({
   },
   cardUserMiddle: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignContent: "center",
     height: "100%",
     width: "50%"

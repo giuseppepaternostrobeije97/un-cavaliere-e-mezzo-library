@@ -39,6 +39,7 @@ const Game = (props) => {
   const [state, setState] = useState({
     match: props.match,
     turn: false,
+    endGame: false,
   });
 
   const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -70,6 +71,7 @@ const Game = (props) => {
         ...state,
         match: obj,
         turn: turn,
+        endGame: obj.ended,
       });
     };
 
@@ -277,8 +279,7 @@ const Game = (props) => {
                   width: "100%",
                 }}
                 horizontal={true}
-                data={mokupCards}
-                //data={state?.match?.hands[2]?.cards}
+                data={state?.match?.hands[2]?.cards}
                 renderItem={renderItem}
               />
             </View>
@@ -307,8 +308,7 @@ const Game = (props) => {
                   width: "100%",
                 }}
                 horizontal={true}
-                data={mokupCards}
-                //data={state?.match?.hands[3]?.cards}
+                data={state?.match?.hands[3]?.cards}
                 renderItem={renderItem}
               />
             </View>
@@ -334,8 +334,7 @@ const Game = (props) => {
                 width: "100%",
               }}
               horizontal={true}
-              data={mokupCards}
-              //data={state?.match?.hands[0]?.cards}
+              data={state?.match?.hands[0]?.cards}
               renderItem={renderItem}
             />
           </View>
