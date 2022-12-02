@@ -42,7 +42,6 @@ const Game = (props) => {
     endGame: false,
   });
 
-  const isMobile = useMediaQuery({ maxWidth: 991 });
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
   useEffect(() => {
@@ -227,28 +226,30 @@ const Game = (props) => {
         <View style={styles.tableGame}>
           {/* carte del giocatore in ALTO */}
           <View style={styles.cardUserTopBottom}>
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 16,
-                margin: 5,
-                color: "#FFF",
-              }}
-            >
-              {state?.match?.hands[1]?.cardValue}{" "}
-            </Text>
             <FlatList
               contentContainerStyle={{
                 justifyContent: "center",
                 alignItems: "flex-start",
                 height: "90%",
                 width: "100%",
+                marginTop:10
               }}
               horizontal={true}
               //data={state?.match?.hands[1]?.cards}
               data={mokupCards}
               renderItem={renderItem}
             />
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 16,
+                  margin: 5,
+                  color: "#FFF",
+                }}
+              >
+                {/* {state?.match?.hands[1]?.cardValue}{" "} */}
+                7
+              </Text>
           </View>
           <View style={styles.middleCardSection}>
             {/* carte del giocatore a DESTRA */}
@@ -261,27 +262,36 @@ const Game = (props) => {
                 },
               ]}
             >
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 16,
-                  margin: 5,
-                  color: "#FFF",
-                }}
-              >
-                {state?.match?.hands[2]?.cardValue} asdasdad
-              </Text>
-              <FlatList
-                contentContainerStyle={{
-                  justifyContent: "center",
-                  alignItems: "flex-end",
-                  height: "90%",
-                  width: "100%",
-                }}
-                horizontal={true}
-                data={state?.match?.hands[2]?.cards}
-                renderItem={renderItem}
-              />
+              <View style={{
+                display:'flex',
+                flexDirection:'column',
+                height: isDesktop ? '100%' : '',
+                marginTop:40
+              }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 16,
+                    margin: 5,
+                    color: "#FFF",
+                  }}
+                >
+                  {/* {state?.match?.hands[2]?.cardValue} */}
+                  7
+                </Text>
+                <FlatList
+                  contentContainerStyle={{
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                    height: "90%",
+                    width: "100%",
+                  }}
+                  horizontal={true}
+                  data={mokupCards}
+                  // data={state?.match?.hands[2]?.cards}
+                  renderItem={renderItem}
+                />
+              </View>
             </View>
             {/* carte del giocatore a SINISTRA */}
             <View
@@ -290,27 +300,36 @@ const Game = (props) => {
                 { transform: [{ rotate: "-90deg" }] },
               ]}
             >
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 16,
-                  margin: 5,
-                  color: "#FFF",
-                }}
-              >
-                {state?.match?.hands[3]?.cardValue}
-              </Text>
-              <FlatList
-                contentContainerStyle={{
-                  justifyContent: "center",
-                  alignItems: "flex-end",
-                  height: "90%",
-                  width: "100%",
-                }}
-                horizontal={true}
-                data={state?.match?.hands[3]?.cards}
-                renderItem={renderItem}
-              />
+              <View style={{
+                display:'flex',
+                flexDirection:'column',
+                height: isDesktop ? '100%' : '',
+                marginTop:40
+              }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 16,
+                    margin: 5,
+                    color: "#FFF",
+                  }}
+                >
+                  {/* {state?.match?.hands[3]?.cardValue} */}
+                  7
+                </Text>
+                <FlatList
+                  contentContainerStyle={{
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                    height: "90%",
+                    width: "100%",
+                  }}
+                  horizontal={true}
+                  // data={state?.match?.hands[3]?.cards}
+                  data={mokupCards}
+                  renderItem={renderItem}
+                />
+              </View>
             </View>
           </View>
           {/* carte del giocatore IN BASSO */}
@@ -323,7 +342,8 @@ const Game = (props) => {
                 color: "#FFF",
               }}
             >
-              {state?.match?.hands[0]?.cardValue}{" "}
+              {/* {state?.match?.hands[0]?.cardValue}{" "} */}
+              7
             </Text>
             <FlatList
               contentContainerStyle={{
@@ -334,7 +354,8 @@ const Game = (props) => {
                 width: "100%",
               }}
               horizontal={true}
-              data={state?.match?.hands[0]?.cards}
+              // data={state?.match?.hands[0]?.cards}
+              data={mokupCards}
               renderItem={renderItem}
             />
           </View>
