@@ -147,16 +147,37 @@ const Game = (props) => {
 
   const renderItem = ({ item }) => {
     return (
-      <Image
-        resizeMode="contain"
-        source={item.url}
-        style={{ width: "100%", height: "100%" }}
-      />
+      <Image resizeMode="contain" source={item.url} style={{ height: 100 }} />
     );
   };
 
   return (
     <View style={styles.container}>
+      <View style={styles.buttonMenagement}>
+        {state?.turn && (
+          <>
+            <CustomButton
+              onClickCallback={stop}
+              label={"STAI"}
+              buttonTextStyle={[styles.btText, { color: "#FFF" }]}
+              buttonContainerStyle={styles.btStop}
+            ></CustomButton>
+            <CustomButton
+              onClickCallback={requestCard}
+              label={"CARTA"}
+              buttonTextStyle={[styles.btText, { color: secondaryColor }]}
+              buttonContainerStyle={styles.btCard}
+            ></CustomButton>
+          </>
+        )}
+
+        <CustomButton
+          onClickCallback={quitMatch}
+          label={"ESCI"}
+          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
+          buttonContainerStyle={styles.btStop}
+        ></CustomButton>
+      </View>
       {/*giocatore in ALTO */}
       <View style={styles.nameUserUp}>
         <Text style={[styles.textUsers, { textAlign: "center" }]}>
@@ -179,25 +200,93 @@ const Game = (props) => {
         <View style={styles.tableGame}>
           {/* carte del giocatore in ALTO */}
           <View style={styles.cardUserTopBottom}>
-            <Text>{state?.match[1]?.value} </Text>
-            <FlatList data={state?.match[1]?.cards} renderItem={renderItem} />
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 16,
+                margin: 5,
+                color: "#FFF",
+              }}
+            >
+              {state?.match?.hands[1]?.cardValue}{" "}
+            </Text>
+            <FlatList
+              horizontal={true}
+              style={{
+                height: "90%",
+                width: "100%",
+              }}
+              data={state?.match?.hands[1]?.cards}
+              renderItem={renderItem}
+            />
           </View>
           <View style={styles.middleCardSection}>
             {/* carte del giocatore a SINISTRA */}
             <View style={styles.cardUserMiddle}>
-              <Text>{state?.match[2]?.value} </Text>
-              <FlatList data={state?.match[2]?.cards} renderItem={renderItem} />
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 16,
+                  margin: 5,
+                  color: "#FFF",
+                }}
+              >
+                {state?.match?.hands[2]?.cardValue}{" "}
+              </Text>
+              <FlatList
+                horizontal={true}
+                style={{
+                  height: "90%",
+                  width: "100%",
+                }}
+                data={state?.match?.hands[2]?.cards}
+                renderItem={renderItem}
+              />
             </View>
             {/* carte del giocatore a DESTRA */}
             <View style={styles.cardUserMiddle}>
-              <Text>{state?.match[3]?.value} </Text>
-              <FlatList data={state?.match[3]?.cards} renderItem={renderItem} />
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 16,
+                  margin: 5,
+                  color: "#FFF",
+                }}
+              >
+                {state?.match?.hands[3]?.cardValue}{" "}
+              </Text>
+              <FlatList
+                horizontal={true}
+                style={{
+                  height: "90%",
+                  width: "100%",
+                }}
+                data={state?.match?.hands[3]?.cards}
+                renderItem={renderItem}
+              />
             </View>
           </View>
           {/* carte del giocatore IN BASSO */}
           <View style={styles.cardUserTopBottom}>
-            <Text>{state?.match[0]?.value} </Text>
-            <FlatList data={state?.match[0]?.cards} renderItem={renderItem} />
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 16,
+                margin: 5,
+                color: "#FFF",
+              }}
+            >
+              {state?.match?.hands[0]?.cardValue}{" "}
+            </Text>
+            <FlatList
+              horizontal={true}
+              style={{
+                height: "90%",
+                width: "100%",
+              }}
+              data={state?.match?.hands[0]?.cards}
+              renderItem={renderItem}
+            />
           </View>
         </View>
         {/*giocatore a DESTRA */}
@@ -213,31 +302,7 @@ const Game = (props) => {
         </View>
       </View>
       <View style={styles.nameUser}>
-        {state.turn && (
-          <>
-            <CustomButton
-              onClickCallback={stop}
-              label={"STAI"}
-              buttonTextStyle={[styles.btText, { color: "#FFF" }]}
-              buttonContainerStyle={styles.btStop}
-            ></CustomButton>
-
-            <CustomButton
-              onClickCallback={requestCard}
-              label={"CARTA"}
-              buttonTextStyle={[styles.btText, { color: secondaryColor }]}
-              buttonContainerStyle={styles.btCard}
-            ></CustomButton>
-          </>
-        )}
-        {/*giocatore IN BASSO */}
         <Text style={styles.textUsers}>{state?.match?.users[0]?.username}</Text>
-        <CustomButton
-          onClickCallback={quitMatch}
-          label={"quitMatch"}
-          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
-          buttonContainerStyle={styles.btCard}
-        ></CustomButton>
       </View>
     </View>
   );
@@ -251,6 +316,18 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     backgroundColor: brandColor,
+  },
+  buttonMenagement: {
+    position: "absolute",
+    top: "50%",
+    left: "30%",
+    right: "30%",
+    // transform: [{translateX:'-50%'}],
+    transform: [{ translateY: "-50%" }],
+    zIndex: 10,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   nameUserUp: {
     height: "10%",
@@ -318,15 +395,18 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    maxWidth: 300,
+    marginVertical: 10,
   },
   btStop: {
     borderRadius: 10,
-    backgroundColor: secondaryColor,
+    backgroundColor: brandColor,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    maxWidth: 300,
   },
   btText: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "bold",
   },
   textUsers: {
