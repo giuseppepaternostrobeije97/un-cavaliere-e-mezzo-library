@@ -11,8 +11,8 @@ function App() {
       {/* <Login /> */}
       {/* <Register /> */}
       {/* <Lobby /> */}
-      <Game/>
-      {/* <Arena/> */}
+      {/* <Game/> */}
+      <Arena/>
       {/* <Ranking /> */}
     </div>
   );

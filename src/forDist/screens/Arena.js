@@ -120,6 +120,12 @@ const Arena = (props) => {
     <View style={styles.container}>
       {/* titleSection */}
       <View style={styles.titleContainer}>
+      <CustomButton
+        onClickCallback={exitLobby}
+        buttonContainerStyle={styles.exitButton}
+      >
+        <Text style={{color:secondaryColor,fontWeight:'bold'}}>Esci</Text>
+      </CustomButton>
         <Text style={styles.title}>{`ARENA ${state?.lobby?.idLobby}`}</Text>
         <View style={{ padding: 10 }}>
           <Text style={styles.normalText}>
@@ -143,12 +149,6 @@ const Arena = (props) => {
       >
         <Image resizeMode={"contain"} style={styles.image} source={shield} />
       </CustomButton>
-      <CustomButton
-        onClickCallback={exitLobby}
-        buttonContainerStyle={styles.btImage}
-      >
-        <Text>Exit</Text>
-      </CustomButton>
 
       <View style={styles.containerCard}>
         {!!state?.lobby?.users[2] && (
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: brandColor,
   },
   titleContainer: {
+    position:'relative',
     backgroundColor: secondaryColor,
     width: "100%",
     height: "10%",
@@ -176,6 +177,15 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  exitButton:{
+    position:'absolute',
+    zIndex:10,
+    left:'94%',
+    backgroundColor:brandColor,
+    paddingHorizontal:20,
+    paddingVertical:10,
+    borderRadius:5
   },
   title: {
     fontSize: 30,
