@@ -25,7 +25,7 @@ var CustomInput = function CustomInput(props) {
   var typing = function typing(e) {
     setValue(e);
     if (!!(props !== null && props !== void 0 && props.callback)) {
-      console.log("aaa");
+      console.log(e);
       props === null || props === void 0 ? void 0 : props.callback(e);
     }
   };

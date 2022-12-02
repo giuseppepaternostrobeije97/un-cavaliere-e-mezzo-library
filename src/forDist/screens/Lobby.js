@@ -37,6 +37,7 @@ const Lobby = (props) => {
       name: "",
       score: 0,
     },
+    idLobby: -1,
   });
 
   const inputRef = useRef(null);
@@ -68,7 +69,8 @@ const Lobby = (props) => {
   };
 
   async function searhArena() {
-    const idLobby = inputRef.current.value;
+    // const idLobby = inputRef.current.value;
+    const idLobby = state.idLobby;
     const response = await putLobby(idLobby);
     if (response.status === 200) {
       let lobby = response.data;
@@ -86,6 +88,12 @@ const Lobby = (props) => {
     } else {
       console.error("CREATE ARENA", response);
     }
+  }
+  function handleIdLobby(idLobby) {
+    setState({
+      ...state,
+      idLobby: idLobby,
+    });
   }
 
   return (
@@ -136,6 +144,7 @@ const Lobby = (props) => {
       {/* arenaListSection */}
       <View style={styles.searchArenaContainer}>
         <TextInput
+          onChangeText={handleIdLobby}
           ref={inputRef}
           style={styles.InputCss}
           placeholderTextColor={"white"}

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import CustomButton from "../components/customButton/CustomButton";
 import CustomInput from "../components/customInput/CustomInput";
 
@@ -20,16 +20,27 @@ const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Register = (props) => {
-  const refEmail = useRef(null);
-  const refName = useRef(null);
-  const refPassword = useRef(null);
-  const refConfirmPassword = useRef(null);
+  const [state, setState] = useState({
+    email: "",
+    name: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const refEmail = useRef();
+  const refName = useRef();
+  const refPassword = useRef();
+  const refConfirmPassword = useRef();
 
   async function onClickRegister() {
-    let email = refEmail.current.value;
-    let name = refName.current.value;
-    let password = refPassword.current.value;
-    let confirmPassword = refConfirmPassword.current.value;
+    // let email = refEmail.current.value;
+    // let name = refName.current.value;
+    // let password = refPassword.current.value;
+    // let confirmPassword = refConfirmPassword.current.value;
+
+    let email = state.email;
+    let name = state.name;
+    let password = state.password;
+    let confirmPassword = state.confirmPassword;
 
     //controllo campi vuoti
     let emptyEmail = checkEmptyText(email);
@@ -85,29 +96,60 @@ const Register = (props) => {
     console.log("Register");
   }
 
+  function handleEmail(email) {
+    setState({
+      ...state,
+      email: email,
+    });
+  }
+
+  function handlePassword(password) {
+    setState({
+      ...state,
+      password: password,
+    });
+  }
+  function handleName(name) {
+    setState({
+      ...state,
+      name: name,
+    });
+  }
+
+  function handleConfirmPassword(confirmPassword) {
+    setState({
+      ...state,
+      confirmPassword: confirmPassword,
+    });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.containerLogin}>
         <Text style={styles.title}>REGISTRA CAVALIERE</Text>
         <CustomInput
+          callback={handleEmail}
           refCustom={refEmail}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Email"}
         />
         <CustomInput
+          callback={handleName}
           refCustom={refName}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Username"}
         />
         <CustomInput
+          callback={handlePassword}
           refCustom={refPassword}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Password"}
         />
         <CustomInput
+          callback={handleConfirmPassword}
           refCustom={refConfirmPassword}
           styleCss={styles.login}
           placeholderColor={"white"}
