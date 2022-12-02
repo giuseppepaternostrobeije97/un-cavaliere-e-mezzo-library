@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import CustomButton from "../components/customButton/CustomButton";
 import CustomInput from "../components/customInput/CustomInput";
 
@@ -19,13 +19,18 @@ const brandColor = "#232726";
 const secondaryColor = "#77523B";
 
 const Login = (props) => {
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
   const refEmail = useRef(null);
   const refPassword = useRef(null);
 
   async function onClickLogin() {
-    let email = refEmail.current.value;
-    let password = refPassword.current.value;
-
+    // let email = refEmail.current.value;
+    // let password = refPassword.current.value;
+    let email = state.email;
+    let password = state.password;
     console.log(refEmail);
 
     //controllo campi vuoti
@@ -69,6 +74,20 @@ const Login = (props) => {
     }
   }
 
+  function handleEmail(email) {
+    setState({
+      ...state,
+      email: email,
+    });
+  }
+
+  function handlePassword(password) {
+    setState({
+      ...state,
+      password: password,
+    });
+  }
+
   function onClickRegister(e) {
     console.log("Register");
 
@@ -80,12 +99,14 @@ const Login = (props) => {
       <View style={styles.containerLogin}>
         <Text style={styles.title}>IDENTIFICA CAVALIERE</Text>
         <CustomInput
+          callback={handleEmail}
           refCustom={refEmail}
           styleCss={styles.login}
           placeholderColor={"white"}
           placeholder={"Email"}
         />
         <CustomInput
+          callback={handlePassword}
           refCustom={refPassword}
           styleCss={styles.login}
           placeholderColor={"white"}

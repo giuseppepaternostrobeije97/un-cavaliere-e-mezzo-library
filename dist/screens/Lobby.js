@@ -44,7 +44,8 @@ var Lobby = function Lobby(props) {
       user: {
         name: "",
         score: 0
-      }
+      },
+      idLobby: -1
     }),
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
@@ -103,7 +104,8 @@ var Lobby = function Lobby(props) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              idLobby = inputRef.current.value;
+              // const idLobby = inputRef.current.value;
+              idLobby = state.idLobby;
               _context2.next = 3;
               return (0, _lobbyAPI.putLobby)(idLobby);
             case 3:
@@ -152,6 +154,11 @@ var Lobby = function Lobby(props) {
     }));
     return _createArena.apply(this, arguments);
   }
+  function handleIdLobby(idLobby) {
+    setState(_objectSpread(_objectSpread({}, state), {}, {
+      idLobby: idLobby
+    }));
+  }
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.container
   }, /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
@@ -198,6 +205,7 @@ var Lobby = function Lobby(props) {
   }))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.searchArenaContainer
   }, /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
+    onChangeText: handleIdLobby,
     ref: inputRef,
     style: styles.InputCss,
     placeholderTextColor: "white",
