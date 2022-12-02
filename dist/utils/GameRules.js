@@ -1,163 +1,208 @@
 "use strict";
 
-var arrayCardsGlobal = [{
-  nome: "Asso di Bastoni",
-  valore: 1,
-  immagine: "-11px -338px"
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CardsArray = void 0;
+var CardsArray = [{
+  figure: "NUMBER",
+  value: 1,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet1.png')
 }, {
-  nome: "Due di Bastoni",
-  valore: 2,
-  immagine: "-113px -338px"
+  figure: "NUMBER",
+  value: 2,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet2.png')
 }, {
-  nome: "Tre di Bastoni",
-  valore: 3,
-  immagine: "-212px -338px"
+  figure: "NUMBER",
+  value: 3,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet3.png')
 }, {
-  nome: "Quattro di Bastoni",
-  valore: 4,
-  immagine: "-312px -338px"
+  figure: "NUMBER",
+  value: 4,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet4.png')
 }, {
-  nome: "Cinque di Bastoni",
-  valore: 5,
-  immagine: "-413px -338px"
+  figure: "NUMBER",
+  value: 5,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet5.png')
 }, {
-  nome: "Sei di Bastoni",
-  valore: 6,
-  immagine: "-513px -338px"
+  figure: "NUMBER",
+  value: 6,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet6.png')
 }, {
-  nome: "Sette di Bastoni",
-  valore: 7,
-  immagine: "-620px -338px"
+  figure: "NUMBER",
+  value: 7,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet7.png')
 }, {
-  nome: "Fante di Bastoni",
-  valore: 0.5,
-  immagine: "-721px -338px"
+  figure: "FANTE",
+  value: 0.5,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet8.png')
 }, {
-  nome: "Cavallo di Bastoni",
-  valore: 0.5,
-  immagine: "-825px -338px"
+  figure: "CAVALLO",
+  value: 0.5,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet9.png')
 }, {
-  nome: "Re di Bastoni",
-  valore: 0.5,
-  immagine: "-928px -338px"
+  figure: "RE",
+  value: 0.5,
+  seed: 'BASTONI',
+  url: require('../assets/cards/helmet10.png')
 }, {
-  nome: "Asso di Denari",
-  valore: 1,
-  immagine: "-11px -174px"
+  figure: "NUMBER",
+  value: 1,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe1.png')
 }, {
-  nome: "Due di Denari",
-  valore: 2,
-  immagine: "-113px -174px"
+  figure: "NUMBER",
+  value: 2,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe2.png')
 }, {
-  nome: "Tre di Denari",
-  valore: 3,
-  immagine: "-212px -174px"
+  figure: "NUMBER",
+  value: 3,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe3.png')
 }, {
-  nome: "Quattro di Denari",
-  valore: 4,
-  immagine: "-312px -174px"
+  figure: "NUMBER",
+  value: 4,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe4.png')
 }, {
-  nome: "Cinque di Denari",
-  valore: 5,
-  immagine: "-413px -174px"
+  figure: "NUMBER",
+  value: 5,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe5.png')
 }, {
-  nome: "Sei di Denari",
-  valore: 6,
-  immagine: "-513px -174px"
+  figure: "NUMBER",
+  value: 6,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe6.png')
 }, {
-  nome: "Sette di Denari",
-  valore: 7,
-  immagine: "-620px -174px"
+  figure: "NUMBER",
+  value: 7,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe7.png')
 }, {
-  nome: "Fante di Denari",
-  valore: 0.5,
-  immagine: "-721px -174px"
+  figure: "FANTE",
+  value: 0.5,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe8.png')
 }, {
-  nome: "Cavallo di Denari",
-  valore: 0.5,
-  immagine: "-825px -174px"
+  figure: "CAVALLO",
+  value: 0.5,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe9.png')
 }, {
-  nome: "Re di Denari",
-  valore: 0.5,
-  immagine: "-928px -174px"
+  figure: "RE",
+  value: 0.5,
+  seed: 'DENARI',
+  url: require('../assets/cards/axe10.png')
 }, {
-  nome: "Asso di Spade",
-  valore: 1,
-  immagine: "-11px -500px"
+  figure: "NUMBER",
+  value: 1,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword1.png')
 }, {
-  nome: "Due di Spade",
-  valore: 2,
-  immagine: "-113px -500px"
+  figure: "NUMBER",
+  value: 2,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword2.png')
 }, {
-  nome: "Tre di Spade",
-  valore: 3,
-  immagine: "-212px -500px"
+  figure: "NUMBER",
+  value: 3,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword3.png')
 }, {
-  nome: "Quattro di Spade",
-  valore: 4,
-  immagine: "-312px -500px"
+  figure: "NUMBER",
+  value: 4,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword4.png')
 }, {
-  nome: "Cinque di Spade",
-  valore: 5,
-  immagine: "-413px -500px"
+  figure: "NUMBER",
+  value: 5,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword5.png')
 }, {
-  nome: "Sei di Spade",
-  valore: 6,
-  immagine: "-513px -500px"
+  figure: "NUMBER",
+  value: 6,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword6.png')
 }, {
-  nome: "Sette di Spade",
-  valore: 7,
-  immagine: "-620px -500px"
+  figure: "NUMBER",
+  value: 7,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword7.png')
 }, {
-  nome: "Fante di Spade",
-  valore: 0.5,
-  immagine: "-721px -500px"
+  figure: "FANTE",
+  value: 0.5,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword8.png')
 }, {
-  nome: "Cavallo di Spade",
-  valore: 0.5,
-  immagine: "-825px -500px"
+  figure: "CAVALLO",
+  value: 0.5,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword9.png')
 }, {
-  nome: "Re di Spade",
-  valore: 0.5,
-  immagine: "-928px -500px"
+  figure: "RE",
+  value: 0.5,
+  seed: 'SPADE',
+  url: require('../assets/cards/sword10.png')
 }, {
-  nome: "Asso di Coppe",
-  valore: 1,
-  immagine: "-11px -12px"
+  figure: "NUMBER",
+  value: 1,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield1.png')
 }, {
-  nome: "Due di Coppe",
-  valore: 2,
-  immagine: "-113px -12px"
+  figure: "NUMBER",
+  value: 2,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield2.png')
 }, {
-  nome: "Tre di Coppe",
-  valore: 3,
-  immagine: "-212px -12px"
+  figure: "NUMBER",
+  value: 3,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield3.png')
 }, {
-  nome: "Quattro di Coppe",
-  valore: 4,
-  immagine: "-312px -12px"
+  figure: "NUMBER",
+  value: 4,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield4.png')
 }, {
-  nome: "Cinque di Coppe",
-  valore: 5,
-  immagine: "-413px -12px"
+  figure: "NUMBER",
+  value: 5,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield5.png')
 }, {
-  nome: "Sei di Coppe",
-  valore: 6,
-  immagine: "-513px -12px"
+  figure: "NUMBER",
+  value: 6,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield6.png')
 }, {
-  nome: "Sette di Coppe",
-  valore: 7,
-  immagine: "-620px -12px"
+  figure: "NUMBER",
+  value: 7,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield7.png')
 }, {
-  nome: "Fante di Coppe",
-  valore: 0.5,
-  immagine: "-721px -12px"
+  figure: "FANTE",
+  value: 0.5,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield8.png')
 }, {
-  nome: "Cavallo di Coppe",
-  valore: 0.5,
-  immagine: "-825px -12px"
+  figure: "CAVALLO",
+  value: 0.5,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield9.png')
 }, {
-  nome: "Re di Coppe",
-  valore: 0.5,
-  immagine: "-928px -12px"
+  figure: "RE",
+  value: 0.5,
+  seed: 'COPPE',
+  url: require('../assets/cards/shield10.png')
 }];
+exports.CardsArray = CardsArray;

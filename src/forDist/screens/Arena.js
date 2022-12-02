@@ -34,12 +34,15 @@ const Arena = (props) => {
     ws = new WebSocket(
       "ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws"
     );
+
     ws.onopen = () => {
       console.log("CONNECTED");
     };
+
     ws.onclose = () => {
       console.log("EXIT CONNECTION");
     };
+
     ws.onmessage = function (event) {
       const obj = JSON.parse(event.data);
       console.log(obj);
@@ -55,6 +58,7 @@ const Arena = (props) => {
         props.game(obj);
       }
     };
+
     ws.onerror = (event) => {
       console.log(event);
     };

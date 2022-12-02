@@ -62,6 +62,9 @@ var Arena = function Arena(props) {
               ws.onopen = function () {
                 console.log("CONNECTED");
               };
+              ws.onclose = function () {
+                console.log("EXIT CONNECTION");
+              };
               ws.onmessage = function (event) {
                 var obj = JSON.parse(event.data);
                 console.log(obj);
@@ -89,7 +92,7 @@ var Arena = function Arena(props) {
                   sendMessage(message);
                 }
               }, 1000);
-            case 9:
+            case 10:
             case "end":
               return _context.stop();
           }

@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _reactNative = require("react-native");
 var _react = _interopRequireWildcard(require("react"));
-var _CARTENAPOLETANE = _interopRequireDefault(require("../assets/CARTE-NAPOLETANE.png"));
+var _GameRules = require("../utils/GameRules");
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _asyncLocalStorage = _interopRequireDefault(require("../utils/async-local-storage"));
@@ -36,7 +36,8 @@ var user = {};
 var Game = function Game(props) {
   var _state$match, _state$match$users$, _state$match2, _state$match2$users$, _state$match3, _state$match3$users$, _state$match4, _state$match4$users$;
   var _useState = (0, _react.useState)({
-      match: props.match
+      match: props.match,
+      hands: []
     }),
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
@@ -46,7 +47,7 @@ var Game = function Game(props) {
   }, []);
   function getUser() {
     return _getUser.apply(this, arguments);
-  } //invio di messaggi in stringhe
+  }
   function _getUser() {
     _getUser = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -65,26 +66,15 @@ var Game = function Game(props) {
               ws.onmessage = function (event) {
                 var obj = JSON.parse(event.data);
                 console.log("ONMESSAGE", obj);
-                // if (state.match === null) {
-                //   setState({
-                //     ...state,
-                //     match: obj,
-                //   });
-
-                //   setTimeout(() => {
-                //     requestCard();
-                //   }, 1000);
-                // } else {
+                setUpHands(obj);
                 setState(_objectSpread(_objectSpread({}, state), {}, {
                   match: obj
                 }));
-                // }
               };
-
               setTimeout(function () {
                 console.log("PRIMA CARTA");
                 requestCard();
-              }, 300);
+              }, 1000);
             case 7:
             case "end":
               return _context.stop();
@@ -94,6 +84,27 @@ var Game = function Game(props) {
     }));
     return _getUser.apply(this, arguments);
   }
+  function setUpHands(obj) {
+    var hands = obj.hands;
+    var _loop = function _loop(i) {
+      var hand = _GameRules.CardsArray.filter(function (el) {
+        return obj.hands[i].cards.some(function (f) {
+          return f.figure === el.figure && f.seed === el.seed && f.value === el.value;
+        });
+      });
+      hands[i].cards = hand;
+    };
+    for (var i = 0; i < obj.hands.length; i++) {
+      _loop(i);
+    }
+    console.log(hands);
+    // setState({
+    //   ...state,
+    //   hands: hands,
+    // });
+  }
+
+  //invio di messaggi in stringhe
   function sendMessage(message) {
     setTimeout(function () {
       ws.send(JSON.stringify(message));
@@ -174,10 +185,7 @@ var Game = function Game(props) {
     style: styles.tableGame
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserTopBottom
-  }, /*#__PURE__*/_react.default.createElement(_reactNative.Image, {
-    style: styles.imgeGame,
-    source: _CARTENAPOLETANE.default
-  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.middleCardSection
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserMiddle

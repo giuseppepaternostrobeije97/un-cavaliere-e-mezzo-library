@@ -1,12 +1,15 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import cards from "../assets/CARTE-NAPOLETANE.png";
+
+//cards
+import { CardsArray } from "../utils/GameRules";
 
 import CustomButton from "../components/customButton/CustomButton";
 
 import PropTypes from "prop-types";
 //getStorage
 import asyncLocalStorage from "../utils/async-local-storage";
+import { FlatList } from "react-native-web";
 
 // colori
 const brandColor = "#232726";
@@ -17,6 +20,7 @@ let user = {};
 const Game = (props) => {
   const [state, setState] = useState({
     match: props.match,
+    turn: false,
   });
 
   useEffect(() => {
@@ -36,11 +40,15 @@ const Game = (props) => {
 
     ws.onmessage = function (event) {
       const obj = JSON.parse(event.data);
+
       console.log("ONMESSAGE", obj);
+
+      let turn = setUpHands(obj);
 
       setState({
         ...state,
         match: obj,
+        turn: turn,
       });
     };
 
@@ -48,6 +56,30 @@ const Game = (props) => {
       console.log("PRIMA CARTA");
       requestCard();
     }, 1000);
+  }
+
+  function setUpHands(obj) {
+    let turn = false;
+    let hands = obj.hands;
+
+    for (let i = 0; i < obj.hands.length; i++) {
+      //vedere se è il tuo turno
+      if (obj.hands[i].user.id === user.id) {
+        turn = obj.hands[i].turn;
+      }
+      //filtrare le carte che ci arrivano con le nostre per avere l'immagine
+      let hand = CardsArray.filter((el) => {
+        return obj.hands[i].cards.some((f) => {
+          return (
+            f.figure === el.figure && f.seed === el.seed && f.value === el.value
+          );
+        });
+      });
+
+      hands[i].cards = hand;
+    }
+
+    return turn;
   }
 
   //invio di messaggi in stringhe
@@ -113,14 +145,27 @@ const Game = (props) => {
     ws.close();
   };
 
+  const renderItem = ({ item }) => {
+    return (
+      <Image
+        resizeMode="contain"
+        source={item.url}
+        style={{ width: "100%", height: "100%" }}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
+      {/*giocatore in ALTO */}
       <View style={styles.nameUserUp}>
         <Text style={[styles.textUsers, { textAlign: "center" }]}>
           {state?.match?.users[1]?.username}
         </Text>
       </View>
+
       <View style={styles.gameSection}>
+        {/*giocatore a SINISTRA */}
         <View style={styles.nameUserLeft}>
           <Text
             style={[
@@ -132,15 +177,30 @@ const Game = (props) => {
           </Text>
         </View>
         <View style={styles.tableGame}>
+          {/* carte del giocatore in ALTO */}
           <View style={styles.cardUserTopBottom}>
-            <Image style={styles.imgeGame} source={cards} />
+            <Text>{state?.match[1]?.value} </Text>
+            <FlatList data={state?.match[1]?.cards} renderItem={renderItem} />
           </View>
           <View style={styles.middleCardSection}>
-            <View style={styles.cardUserMiddle}></View>
-            <View style={styles.cardUserMiddle}></View>
+            {/* carte del giocatore a SINISTRA */}
+            <View style={styles.cardUserMiddle}>
+              <Text>{state?.match[2]?.value} </Text>
+              <FlatList data={state?.match[2]?.cards} renderItem={renderItem} />
+            </View>
+            {/* carte del giocatore a DESTRA */}
+            <View style={styles.cardUserMiddle}>
+              <Text>{state?.match[3]?.value} </Text>
+              <FlatList data={state?.match[3]?.cards} renderItem={renderItem} />
+            </View>
           </View>
-          <View style={styles.cardUserTopBottom}></View>
+          {/* carte del giocatore IN BASSO */}
+          <View style={styles.cardUserTopBottom}>
+            <Text>{state?.match[0]?.value} </Text>
+            <FlatList data={state?.match[0]?.cards} renderItem={renderItem} />
+          </View>
         </View>
+        {/*giocatore a DESTRA */}
         <View style={styles.nameUserRigth}>
           <Text
             style={[
@@ -153,19 +213,25 @@ const Game = (props) => {
         </View>
       </View>
       <View style={styles.nameUser}>
-        <CustomButton
-          onClickCallback={stop}
-          label={"STAI"}
-          buttonTextStyle={[styles.btText, { color: "#FFF" }]}
-          buttonContainerStyle={styles.btStop}
-        ></CustomButton>
+        {state.turn && (
+          <>
+            <CustomButton
+              onClickCallback={stop}
+              label={"STAI"}
+              buttonTextStyle={[styles.btText, { color: "#FFF" }]}
+              buttonContainerStyle={styles.btStop}
+            ></CustomButton>
+
+            <CustomButton
+              onClickCallback={requestCard}
+              label={"CARTA"}
+              buttonTextStyle={[styles.btText, { color: secondaryColor }]}
+              buttonContainerStyle={styles.btCard}
+            ></CustomButton>
+          </>
+        )}
+        {/*giocatore IN BASSO */}
         <Text style={styles.textUsers}>{state?.match?.users[0]?.username}</Text>
-        <CustomButton
-          onClickCallback={requestCard}
-          label={"CARTA"}
-          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
-          buttonContainerStyle={styles.btCard}
-        ></CustomButton>
         <CustomButton
           onClickCallback={quitMatch}
           label={"quitMatch"}
