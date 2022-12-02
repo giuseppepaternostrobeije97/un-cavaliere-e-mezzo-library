@@ -12,6 +12,7 @@ import asyncLocalStorage from "../utils/async-local-storage";
 import { FlatList } from "react-native-web";
 //hook
 import { useMediaQuery } from "react-responsive";
+import ModalComponent from "../components/customModal/ModalComponent";
 
 // colori
 const brandColor = "#232726";
@@ -354,6 +355,13 @@ const Game = (props) => {
       <View style={styles.nameUser}>
         <Text style={styles.textUsers}>{state?.match?.users[0]?.username}</Text>
       </View>
+      <ModalComponent isOpen={state.endGame}>
+        <Text>
+          {state.match.winners.length > 0
+            ? `${state.match.winners[0].username} ha vinto la partita`
+            : "Non ha vinto nessuno"}
+        </Text>
+      </ModalComponent>
     </View>
   );
 };
