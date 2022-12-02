@@ -172,6 +172,7 @@ const Game = (props) => {
       checkEndMatch();
       disconnect();
     }, 100);
+    callbackEnd()
   };
 
   const disconnect = () => {
