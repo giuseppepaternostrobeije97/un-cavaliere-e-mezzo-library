@@ -49,6 +49,20 @@ const Game = (props) => {
     getUser();
   }, []);
 
+  useEffect(() => {
+    if (state.endGame) {
+      alert("gioco terminato");
+      const EndMessage = {
+        user_id: user.id,
+        method: "quitMatch",
+      };
+      sendMessage(EndMessage);
+    }
+    if (!!props.callBackEndGame) {
+      props.callBackEndGame();
+    }
+  }, [state.endGame]);
+
   async function getUser() {
     user = await asyncLocalStorage();
     //web socket
@@ -233,24 +247,23 @@ const Game = (props) => {
                 alignItems: "flex-start",
                 height: "90%",
                 width: "100%",
-                marginTop:10
+                marginTop: 10,
               }}
               horizontal={true}
               //data={state?.match?.hands[1]?.cards}
               data={mokupCards}
               renderItem={renderItem}
             />
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 16,
-                  margin: 5,
-                  color: "#FFF",
-                }}
-              >
-                {/* {state?.match?.hands[1]?.cardValue}{" "} */}
-                7
-              </Text>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 16,
+                margin: 5,
+                color: "#FFF",
+              }}
+            >
+              {/* {state?.match?.hands[1]?.cardValue}{" "} */}7
+            </Text>
           </View>
           <View style={styles.middleCardSection}>
             {/* carte del giocatore a DESTRA */}
@@ -263,12 +276,14 @@ const Game = (props) => {
                 },
               ]}
             >
-              <View style={{
-                display:'flex',
-                flexDirection:'column',
-                height: isDesktop ? '100%' : '',
-                marginTop:40
-              }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: isDesktop ? "100%" : "",
+                  marginTop: 40,
+                }}
+              >
                 <Text
                   style={{
                     textAlign: "center",
@@ -277,8 +292,7 @@ const Game = (props) => {
                     color: "#FFF",
                   }}
                 >
-                  {/* {state?.match?.hands[2]?.cardValue} */}
-                  7
+                  {/* {state?.match?.hands[2]?.cardValue} */}7
                 </Text>
                 <FlatList
                   contentContainerStyle={{
@@ -301,12 +315,14 @@ const Game = (props) => {
                 { transform: [{ rotate: "-90deg" }] },
               ]}
             >
-              <View style={{
-                display:'flex',
-                flexDirection:'column',
-                height: isDesktop ? '100%' : '',
-                marginTop:40
-              }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: isDesktop ? "100%" : "",
+                  marginTop: 40,
+                }}
+              >
                 <Text
                   style={{
                     textAlign: "center",
@@ -315,8 +331,7 @@ const Game = (props) => {
                     color: "#FFF",
                   }}
                 >
-                  {/* {state?.match?.hands[3]?.cardValue} */}
-                  7
+                  {/* {state?.match?.hands[3]?.cardValue} */}7
                 </Text>
                 <FlatList
                   contentContainerStyle={{
@@ -343,8 +358,7 @@ const Game = (props) => {
                 color: "#FFF",
               }}
             >
-              {/* {state?.match?.hands[0]?.cardValue}{" "} */}
-              7
+              {/* {state?.match?.hands[0]?.cardValue}{" "} */}7
             </Text>
             <FlatList
               contentContainerStyle={{
