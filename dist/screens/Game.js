@@ -11,7 +11,6 @@ var _GameRules = require("../utils/GameRules");
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _asyncLocalStorage = _interopRequireDefault(require("../utils/async-local-storage"));
-var _reactNativeWeb = require("react-native-web");
 var _reactResponsive = require("react-responsive");
 var _ModalComponent = _interopRequireDefault(require("../components/customModal/ModalComponent"));
 var _knight = _interopRequireDefault(require("../assets/knight.png"));
@@ -55,7 +54,7 @@ var Game = function Game(props) {
   var _useState = (0, _react.useState)({
       match: props.match,
       turn: false,
-      endGame: true
+      endGame: false
     }),
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
@@ -208,6 +207,7 @@ var Game = function Game(props) {
     });
   };
   var callbackEnd = function callbackEnd() {
+    console.log('torna alla lobby');
     if (!!props.callBackEndGame) {
       props.callBackEndGame();
     }
@@ -258,7 +258,7 @@ var Game = function Game(props) {
     style: styles.tableGame
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserTopBottom
-  }, /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.FlatList, {
     contentContainerStyle: {
       justifyContent: "center",
       alignItems: "flex-start",
@@ -300,7 +300,7 @@ var Game = function Game(props) {
       margin: 5,
       color: "#FFF"
     }
-  }, state === null || state === void 0 ? void 0 : (_state$match5 = state.match) === null || _state$match5 === void 0 ? void 0 : (_state$match5$hands$ = _state$match5.hands[2]) === null || _state$match5$hands$ === void 0 ? void 0 : _state$match5$hands$.cardValue), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+  }, state === null || state === void 0 ? void 0 : (_state$match5 = state.match) === null || _state$match5 === void 0 ? void 0 : (_state$match5$hands$ = _state$match5.hands[2]) === null || _state$match5$hands$ === void 0 ? void 0 : _state$match5$hands$.cardValue), /*#__PURE__*/_react.default.createElement(_reactNative.FlatList, {
     contentContainerStyle: {
       justifyContent: "center",
       alignItems: "flex-end",
@@ -332,7 +332,7 @@ var Game = function Game(props) {
       margin: 5,
       color: "#FFF"
     }
-  }, state === null || state === void 0 ? void 0 : (_state$match7 = state.match) === null || _state$match7 === void 0 ? void 0 : (_state$match7$hands$ = _state$match7.hands[3]) === null || _state$match7$hands$ === void 0 ? void 0 : _state$match7$hands$.cardValue), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+  }, state === null || state === void 0 ? void 0 : (_state$match7 = state.match) === null || _state$match7 === void 0 ? void 0 : (_state$match7$hands$ = _state$match7.hands[3]) === null || _state$match7$hands$ === void 0 ? void 0 : _state$match7$hands$.cardValue), /*#__PURE__*/_react.default.createElement(_reactNative.FlatList, {
     contentContainerStyle: {
       justifyContent: "center",
       alignItems: "flex-end",
@@ -353,7 +353,7 @@ var Game = function Game(props) {
       margin: 5,
       color: "#FFF"
     }
-  }, state === null || state === void 0 ? void 0 : (_state$match9 = state.match) === null || _state$match9 === void 0 ? void 0 : (_state$match9$hands$ = _state$match9.hands[0]) === null || _state$match9$hands$ === void 0 ? void 0 : _state$match9$hands$.cardValue), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+  }, state === null || state === void 0 ? void 0 : (_state$match9 = state.match) === null || _state$match9 === void 0 ? void 0 : (_state$match9$hands$ = _state$match9.hands[0]) === null || _state$match9$hands$ === void 0 ? void 0 : _state$match9$hands$.cardValue), /*#__PURE__*/_react.default.createElement(_reactNative.FlatList, {
     contentContainerStyle: {
       justifyContent: "center",
       alignItems: "flex-end",

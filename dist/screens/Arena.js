@@ -221,7 +221,7 @@ var styles = _reactNative.StyleSheet.create({
   exitButton: {
     position: 'absolute',
     zIndex: 10,
-    left: '94%',
+    left: '2%',
     backgroundColor: brandColor,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -235,7 +235,7 @@ var styles = _reactNative.StyleSheet.create({
   normalText: {
     textAlign: "center",
     color: "#fff",
-    fontSize: 15,
+    fontSize: 12,
     textTransform: "uppercase"
   },
   btImage: {

@@ -189,7 +189,7 @@ const Game = (props) => {
   };
 
   const callbackEnd = () => {
-    console.log('torna alla lobby');
+    console.log("torna alla lobby");
     if (!!props.callBackEndGame) {
       props.callBackEndGame();
     }
@@ -282,7 +282,8 @@ const Game = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  height: isDesktop ? "100%" : "",
+                  //height: isDesktop ? "100%" : "",
+                  height: "100%",
                   marginTop: 40,
                 }}
               >
@@ -321,7 +322,8 @@ const Game = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  height: isDesktop ? "100%" : "",
+                  //height: isDesktop ? "100%" : "",
+                  height: "100%",
                   marginTop: 40,
                 }}
               >
