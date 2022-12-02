@@ -40,7 +40,7 @@ const Game = (props) => {
   const [state, setState] = useState({
     match: props.match,
     turn: false,
-    endGame: true,
+    endGame: false,
   });
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
@@ -189,6 +189,7 @@ const Game = (props) => {
   };
 
   const callbackEnd = () => {
+    console.log('torna alla lobby');
     if (!!props.callBackEndGame) {
       props.callBackEndGame();
     }
