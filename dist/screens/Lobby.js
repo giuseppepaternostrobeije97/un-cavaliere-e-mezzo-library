@@ -159,6 +159,11 @@ var Lobby = function Lobby(props) {
       idLobby: idLobby
     }));
   }
+  var callbackRanking = function callbackRanking() {
+    if (!!props.callbackRankingNav) {
+      props.callbackRankingNav();
+    }
+  };
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.container
   }, /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
@@ -191,7 +196,8 @@ var Lobby = function Lobby(props) {
     style: styles.uiLine
   }), /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.normalText
-  }, state === null || state === void 0 ? void 0 : state.user.score)), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, state === null || state === void 0 ? void 0 : state.user.score)), /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
+    onPress: callbackRanking,
     style: styles.ranking
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Image, {
     source: _rankList.default,
