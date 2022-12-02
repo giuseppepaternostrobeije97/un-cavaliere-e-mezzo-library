@@ -10,7 +10,6 @@ const CustomInput = (props) => {
   const typing = (e) => {
     setValue(e);
     if (!!props?.callback) {
-      console.log(e);
       props?.callback(e);
     }
   };
