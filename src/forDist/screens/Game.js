@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList } from "react-native";
+
 import React, { useEffect, useState } from "react";
 
 //cards
@@ -9,11 +10,10 @@ import CustomButton from "../components/customButton/CustomButton";
 import PropTypes from "prop-types";
 //getStorage
 import asyncLocalStorage from "../utils/async-local-storage";
-import { FlatList } from "react-native-web";
 //hook
 import { useMediaQuery } from "react-responsive";
 import ModalComponent from "../components/customModal/ModalComponent";
-import knight from '../assets/knight.png'
+import knight from "../assets/knight.png";
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
@@ -192,7 +192,7 @@ const Game = (props) => {
     if (!!props.callBackEndGame) {
       props.callBackEndGame();
     }
-  }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.buttonMenagement}>
@@ -251,8 +251,8 @@ const Game = (props) => {
                 marginTop: 10,
               }}
               horizontal={true}
-              //data={state?.match?.hands[1]?.cards}
-              data={mokupCards}
+              data={state?.match?.hands[1]?.cards}
+              // data={mokupCards}
               renderItem={renderItem}
             />
             <Text
@@ -263,7 +263,7 @@ const Game = (props) => {
                 color: "#FFF",
               }}
             >
-              {/* {state?.match?.hands[1]?.cardValue}{" "} */}7
+              {state?.match?.hands[1]?.cardValue}
             </Text>
           </View>
           <View style={styles.middleCardSection}>
@@ -293,7 +293,7 @@ const Game = (props) => {
                     color: "#FFF",
                   }}
                 >
-                  {/* {state?.match?.hands[2]?.cardValue} */}7
+                  {state?.match?.hands[2]?.cardValue}
                 </Text>
                 <FlatList
                   contentContainerStyle={{
@@ -303,8 +303,8 @@ const Game = (props) => {
                     width: "100%",
                   }}
                   horizontal={true}
-                  data={mokupCards}
-                  // data={state?.match?.hands[2]?.cards}
+                  //data={mokupCards}
+                  data={state?.match?.hands[2]?.cards}
                   renderItem={renderItem}
                 />
               </View>
@@ -332,7 +332,7 @@ const Game = (props) => {
                     color: "#FFF",
                   }}
                 >
-                  {/* {state?.match?.hands[3]?.cardValue} */}7
+                  {state?.match?.hands[3]?.cardValue}
                 </Text>
                 <FlatList
                   contentContainerStyle={{
@@ -342,8 +342,8 @@ const Game = (props) => {
                     width: "100%",
                   }}
                   horizontal={true}
-                  // data={state?.match?.hands[3]?.cards}
-                  data={mokupCards}
+                  data={state?.match?.hands[3]?.cards}
+                  //data={mokupCards}
                   renderItem={renderItem}
                 />
               </View>
@@ -359,7 +359,7 @@ const Game = (props) => {
                 color: "#FFF",
               }}
             >
-              {/* {state?.match?.hands[0]?.cardValue}{" "} */}7
+              {state?.match?.hands[0]?.cardValue}
             </Text>
             <FlatList
               contentContainerStyle={{
@@ -370,8 +370,8 @@ const Game = (props) => {
                 width: "100%",
               }}
               horizontal={true}
-              // data={state?.match?.hands[0]?.cards}
-              data={mokupCards}
+              data={state?.match?.hands[0]?.cards}
+              //data={mokupCards}
               renderItem={renderItem}
             />
           </View>
@@ -392,30 +392,37 @@ const Game = (props) => {
         <Text style={styles.textUsers}>{state?.match?.users[0]?.username}</Text>
       </View>
       <ModalComponent isOpen={state.endGame}>
-        <View style={{
-          width:'80%',
-          height:'80%',
-          backgroundColor:brandColor,
-          display:'flex',
-          flexDirection:'column',
-          justifyContent:'space-around',
-          alignItems:'center'
-        }}>
-          <Text style={{color:secondaryColor,fontSize:18}}>
+        <View
+          style={{
+            width: "80%",
+            height: "80%",
+            backgroundColor: brandColor,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: secondaryColor, fontSize: 18 }}>
             {state.match?.winners?.length > 0
               ? `${state.match?.winners[0]?.username} ha vinto la partita`
               : "Non ha vinto nessuno"}
           </Text>
           <Image
-          source={knight}
-          style={{width:200,height:200}}
-          resizeMode={"contain"}
+            source={knight}
+            style={{ width: 200, height: 200 }}
+            resizeMode={"contain"}
           />
           <CustomButton
-          onClickCallback={callbackEnd}
-          buttonContainerStyle={{backgroundColor:secondaryColor,paddingHorizontal:20,paddingVertical:10,borderRadius:5}}
-          label={'TORNA ALLA LOBBY'}
-          buttonTextStyle={{color:brandColor,fontWeight:'bold'}}
+            onClickCallback={callbackEnd}
+            buttonContainerStyle={{
+              backgroundColor: secondaryColor,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              borderRadius: 5,
+            }}
+            label={"TORNA ALLA LOBBY"}
+            buttonTextStyle={{ color: brandColor, fontWeight: "bold" }}
           />
         </View>
       </ModalComponent>

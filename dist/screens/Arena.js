@@ -165,7 +165,15 @@ var Arena = function Arena(props) {
     style: styles.container
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.titleContainer
+  }, /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
+    onClickCallback: exitLobby,
+    buttonContainerStyle: styles.exitButton
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+    style: {
+      color: secondaryColor,
+      fontWeight: 'bold'
+    }
+  }, "Esci")), /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.title
   }, "ARENA ".concat(state === null || state === void 0 ? void 0 : (_state$lobby = state.lobby) === null || _state$lobby === void 0 ? void 0 : _state$lobby.idLobby)), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: {
@@ -186,10 +194,7 @@ var Arena = function Arena(props) {
     resizeMode: "contain",
     style: styles.image,
     source: _shield.default
-  })), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
-    onClickCallback: exitLobby,
-    buttonContainerStyle: styles.btImage
-  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, null, "Exit")), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.containerCard
   }, !!(state !== null && state !== void 0 && (_state$lobby6 = state.lobby) !== null && _state$lobby6 !== void 0 && _state$lobby6.users[2]) && /*#__PURE__*/_react.default.createElement(_CardPlayer.default, {
     playerName: state === null || state === void 0 ? void 0 : (_state$lobby7 = state.lobby) === null || _state$lobby7 === void 0 ? void 0 : _state$lobby7.users[2].username
@@ -204,6 +209,7 @@ var styles = _reactNative.StyleSheet.create({
     backgroundColor: brandColor
   },
   titleContainer: {
+    position: 'relative',
     backgroundColor: secondaryColor,
     width: "100%",
     height: "10%",
@@ -211,6 +217,15 @@ var styles = _reactNative.StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
+  },
+  exitButton: {
+    position: 'absolute',
+    zIndex: 10,
+    left: '94%',
+    backgroundColor: brandColor,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5
   },
   title: {
     fontSize: 30,
