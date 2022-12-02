@@ -11,6 +11,7 @@ var _GameRules = require("../utils/GameRules");
 var _CustomButton = _interopRequireDefault(require("../components/customButton/CustomButton"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _asyncLocalStorage = _interopRequireDefault(require("../utils/async-local-storage"));
+var _reactNativeWeb = require("react-native-web");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -34,10 +35,10 @@ var secondaryColor = "#77523B";
 var ws = null;
 var user = {};
 var Game = function Game(props) {
-  var _state$match, _state$match$users$, _state$match2, _state$match2$users$, _state$match3, _state$match3$users$, _state$match4, _state$match4$users$;
+  var _state$match, _state$match$users$, _state$match2, _state$match2$users$, _state$match3, _state$match3$hands$, _state$match4, _state$match4$hands$, _state$match5, _state$match5$hands$, _state$match6, _state$match6$hands$, _state$match7, _state$match7$hands$, _state$match8, _state$match8$hands$, _state$match9, _state$match9$hands$, _state$match10, _state$match10$hands$, _state$match11, _state$match11$users$, _state$match12, _state$match12$users$;
   var _useState = (0, _react.useState)({
       match: props.match,
-      hands: []
+      turn: false
     }),
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
@@ -66,9 +67,10 @@ var Game = function Game(props) {
               ws.onmessage = function (event) {
                 var obj = JSON.parse(event.data);
                 console.log("ONMESSAGE", obj);
-                setUpHands(obj);
+                var turn = setUpHands(obj);
                 setState(_objectSpread(_objectSpread({}, state), {}, {
-                  match: obj
+                  match: obj,
+                  turn: turn
                 }));
               };
               setTimeout(function () {
@@ -85,8 +87,14 @@ var Game = function Game(props) {
     return _getUser.apply(this, arguments);
   }
   function setUpHands(obj) {
+    var turn = false;
     var hands = obj.hands;
     var _loop = function _loop(i) {
+      //vedere se è il tuo turno
+      if (obj.hands[i].user.id === user.id) {
+        turn = obj.hands[i].turn;
+      }
+      //filtrare le carte che ci arrivano con le nostre per avere l'immagine
       var hand = _GameRules.CardsArray.filter(function (el) {
         return obj.hands[i].cards.some(function (f) {
           return f.figure === el.figure && f.seed === el.seed && f.value === el.value;
@@ -97,11 +105,7 @@ var Game = function Game(props) {
     for (var i = 0; i < obj.hands.length; i++) {
       _loop(i);
     }
-    console.log(hands);
-    // setState({
-    //   ...state,
-    //   hands: hands,
-    // });
+    return turn;
   }
 
   //invio di messaggi in stringhe
@@ -162,9 +166,43 @@ var Game = function Game(props) {
   var disconnect = function disconnect() {
     ws.close();
   };
+  var renderItem = function renderItem(_ref) {
+    var item = _ref.item;
+    return /*#__PURE__*/_react.default.createElement(_reactNative.Image, {
+      resizeMode: "contain",
+      source: item.url,
+      style: {
+        height: 100,
+        width: 100
+      }
+    });
+  };
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.container
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+    style: styles.buttonMenagement
+  }, (state === null || state === void 0 ? void 0 : state.turn) && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
+    onClickCallback: stop,
+    label: "STAI",
+    buttonTextStyle: [styles.btText, {
+      color: "#FFF"
+    }],
+    buttonContainerStyle: styles.btStop
+  }), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
+    onClickCallback: requestCard,
+    label: "CARTA",
+    buttonTextStyle: [styles.btText, {
+      color: secondaryColor
+    }],
+    buttonContainerStyle: styles.btCard
+  })), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
+    onClickCallback: quitMatch,
+    label: "ESCI",
+    buttonTextStyle: [styles.btText, {
+      color: secondaryColor
+    }],
+    buttonContainerStyle: styles.btStop
+  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.nameUserUp
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: [styles.textUsers, {
@@ -185,15 +223,75 @@ var Game = function Game(props) {
     style: styles.tableGame
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserTopBottom
-  }), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+    style: {
+      textAlign: "center",
+      fontSize: 16,
+      margin: 5,
+      color: "#FFF"
+    }
+  }, state === null || state === void 0 ? void 0 : (_state$match3 = state.match) === null || _state$match3 === void 0 ? void 0 : (_state$match3$hands$ = _state$match3.hands[1]) === null || _state$match3$hands$ === void 0 ? void 0 : _state$match3$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+    horizontal: true,
+    style: {
+      height: "90%",
+      width: "100%"
+    },
+    data: state === null || state === void 0 ? void 0 : (_state$match4 = state.match) === null || _state$match4 === void 0 ? void 0 : (_state$match4$hands$ = _state$match4.hands[1]) === null || _state$match4$hands$ === void 0 ? void 0 : _state$match4$hands$.cards,
+    renderItem: renderItem
+  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.middleCardSection
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserMiddle
-  }), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+    style: {
+      textAlign: "center",
+      fontSize: 16,
+      margin: 5,
+      color: "#FFF"
+    }
+  }, state === null || state === void 0 ? void 0 : (_state$match5 = state.match) === null || _state$match5 === void 0 ? void 0 : (_state$match5$hands$ = _state$match5.hands[2]) === null || _state$match5$hands$ === void 0 ? void 0 : _state$match5$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+    horizontal: true,
+    style: {
+      height: "90%",
+      width: "100%"
+    },
+    data: state === null || state === void 0 ? void 0 : (_state$match6 = state.match) === null || _state$match6 === void 0 ? void 0 : (_state$match6$hands$ = _state$match6.hands[2]) === null || _state$match6$hands$ === void 0 ? void 0 : _state$match6$hands$.cards,
+    renderItem: renderItem
+  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserMiddle
-  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+    style: {
+      textAlign: "center",
+      fontSize: 16,
+      margin: 5,
+      color: "#FFF"
+    }
+  }, state === null || state === void 0 ? void 0 : (_state$match7 = state.match) === null || _state$match7 === void 0 ? void 0 : (_state$match7$hands$ = _state$match7.hands[3]) === null || _state$match7$hands$ === void 0 ? void 0 : _state$match7$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+    horizontal: true,
+    style: {
+      height: "90%",
+      width: "100%"
+    },
+    data: state === null || state === void 0 ? void 0 : (_state$match8 = state.match) === null || _state$match8 === void 0 ? void 0 : (_state$match8$hands$ = _state$match8.hands[3]) === null || _state$match8$hands$ === void 0 ? void 0 : _state$match8$hands$.cards,
+    renderItem: renderItem
+  }))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.cardUserTopBottom
-  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+    style: {
+      textAlign: "center",
+      fontSize: 16,
+      margin: 5,
+      color: "#FFF"
+    }
+  }, state === null || state === void 0 ? void 0 : (_state$match9 = state.match) === null || _state$match9 === void 0 ? void 0 : (_state$match9$hands$ = _state$match9.hands[0]) === null || _state$match9$hands$ === void 0 ? void 0 : _state$match9$hands$.cardValue, " "), /*#__PURE__*/_react.default.createElement(_reactNativeWeb.FlatList, {
+    horizontal: true,
+    style: {
+      height: "90%",
+      width: "100%"
+    },
+    data: state === null || state === void 0 ? void 0 : (_state$match10 = state.match) === null || _state$match10 === void 0 ? void 0 : (_state$match10$hands$ = _state$match10.hands[0]) === null || _state$match10$hands$ === void 0 ? void 0 : _state$match10$hands$.cards,
+    renderItem: renderItem
+  }))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.nameUserRigth
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: [styles.textUsers, {
@@ -202,32 +300,11 @@ var Game = function Game(props) {
       }],
       width: "300%"
     }]
-  }, state === null || state === void 0 ? void 0 : (_state$match3 = state.match) === null || _state$match3 === void 0 ? void 0 : (_state$match3$users$ = _state$match3.users[3]) === null || _state$match3$users$ === void 0 ? void 0 : _state$match3$users$.username))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, state === null || state === void 0 ? void 0 : (_state$match11 = state.match) === null || _state$match11 === void 0 ? void 0 : (_state$match11$users$ = _state$match11.users[3]) === null || _state$match11$users$ === void 0 ? void 0 : _state$match11$users$.username))), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: styles.nameUser
-  }, /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
-    onClickCallback: stop,
-    label: "STAI",
-    buttonTextStyle: [styles.btText, {
-      color: "#FFF"
-    }],
-    buttonContainerStyle: styles.btStop
-  }), /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styles.textUsers
-  }, state === null || state === void 0 ? void 0 : (_state$match4 = state.match) === null || _state$match4 === void 0 ? void 0 : (_state$match4$users$ = _state$match4.users[0]) === null || _state$match4$users$ === void 0 ? void 0 : _state$match4$users$.username), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
-    onClickCallback: requestCard,
-    label: "CARTA",
-    buttonTextStyle: [styles.btText, {
-      color: secondaryColor
-    }],
-    buttonContainerStyle: styles.btCard
-  }), /*#__PURE__*/_react.default.createElement(_CustomButton.default, {
-    onClickCallback: quitMatch,
-    label: "quitMatch",
-    buttonTextStyle: [styles.btText, {
-      color: secondaryColor
-    }],
-    buttonContainerStyle: styles.btCard
-  })));
+  }, state === null || state === void 0 ? void 0 : (_state$match12 = state.match) === null || _state$match12 === void 0 ? void 0 : (_state$match12$users$ = _state$match12.users[0]) === null || _state$match12$users$ === void 0 ? void 0 : _state$match12$users$.username)));
 };
 var styles = _reactNative.StyleSheet.create({
   container: {
@@ -237,6 +314,20 @@ var styles = _reactNative.StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     backgroundColor: brandColor
+  },
+  buttonMenagement: {
+    position: "absolute",
+    top: "50%",
+    left: "30%",
+    right: "30%",
+    // transform: [{translateX:'-50%'}],
+    transform: [{
+      translateY: "-50%"
+    }],
+    zIndex: 10,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   nameUserUp: {
     height: "10%",
@@ -268,6 +359,9 @@ var styles = _reactNative.StyleSheet.create({
     borderRadius: 15
   },
   cardUserTopBottom: {
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     height: "30%",
     width: "100%"
   },
@@ -278,6 +372,9 @@ var styles = _reactNative.StyleSheet.create({
     flexDirection: "row"
   },
   cardUserMiddle: {
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     height: "100%",
     width: "50%"
   },
@@ -303,16 +400,19 @@ var styles = _reactNative.StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: 10,
+    maxWidth: 300,
+    marginVertical: 10
   },
   btStop: {
     borderRadius: 10,
-    backgroundColor: secondaryColor,
+    backgroundColor: brandColor,
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: 10,
+    maxWidth: 300
   },
   btText: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "bold"
   },
   textUsers: {

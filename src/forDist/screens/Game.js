@@ -10,6 +10,8 @@ import PropTypes from "prop-types";
 //getStorage
 import asyncLocalStorage from "../utils/async-local-storage";
 import { FlatList } from "react-native-web";
+//hook
+import { useMediaQuery } from "react-responsive";
 
 // colori
 const brandColor = "#232726";
@@ -17,11 +19,30 @@ const secondaryColor = "#77523B";
 let ws = null;
 let user = {};
 
+//mokup
+const mokupCards = [
+  {
+    figure: "NUMBER",
+    seed: "DENARI",
+    value: "2",
+    url: "/static/media/axe2.715940f72c16388e4b63.png",
+  },
+  {
+    figure: "NUMBER",
+    seed: "DENARI",
+    value: "7",
+    url: "/static/media/axe5.3fccba33faecf06375ce.png",
+  },
+];
+
 const Game = (props) => {
   const [state, setState] = useState({
     match: props.match,
     turn: false,
   });
+
+  const isMobile = useMediaQuery({ maxWidth: 991 });
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   useEffect(() => {
     getUser();
@@ -147,7 +168,11 @@ const Game = (props) => {
 
   const renderItem = ({ item }) => {
     return (
-      <Image resizeMode="contain" source={item.url} style={{ height: 100 }} />
+      <Image
+        resizeMode="contain"
+        source={item.url}
+        style={{ height: isDesktop ? 100 : 50, width: isDesktop ? 100 : 50 }}
+      />
     );
   };
 
@@ -211,18 +236,29 @@ const Game = (props) => {
               {state?.match?.hands[1]?.cardValue}{" "}
             </Text>
             <FlatList
-              horizontal={true}
-              style={{
+              contentContainerStyle={{
+                justifyContent: "center",
+                alignItems: "flex-start",
                 height: "90%",
                 width: "100%",
               }}
-              data={state?.match?.hands[1]?.cards}
+              horizontal={true}
+              //data={state?.match?.hands[1]?.cards}
+              data={mokupCards}
               renderItem={renderItem}
             />
           </View>
           <View style={styles.middleCardSection}>
-            {/* carte del giocatore a SINISTRA */}
-            <View style={styles.cardUserMiddle}>
+            {/* carte del giocatore a DESTRA */}
+
+            <View
+              style={[
+                styles.cardUserMiddle,
+                {
+                  transform: [{ rotate: "90deg" }],
+                },
+              ]}
+            >
               <Text
                 style={{
                   textAlign: "center",
@@ -231,20 +267,28 @@ const Game = (props) => {
                   color: "#FFF",
                 }}
               >
-                {state?.match?.hands[2]?.cardValue}{" "}
+                {state?.match?.hands[2]?.cardValue} asdasdad
               </Text>
               <FlatList
-                horizontal={true}
-                style={{
+                contentContainerStyle={{
+                  justifyContent: "center",
+                  alignItems: "flex-end",
                   height: "90%",
                   width: "100%",
                 }}
-                data={state?.match?.hands[2]?.cards}
+                horizontal={true}
+                data={mokupCards}
+                //data={state?.match?.hands[2]?.cards}
                 renderItem={renderItem}
               />
             </View>
-            {/* carte del giocatore a DESTRA */}
-            <View style={styles.cardUserMiddle}>
+            {/* carte del giocatore a SINISTRA */}
+            <View
+              style={[
+                styles.cardUserMiddle,
+                { transform: [{ rotate: "-90deg" }] },
+              ]}
+            >
               <Text
                 style={{
                   textAlign: "center",
@@ -253,15 +297,18 @@ const Game = (props) => {
                   color: "#FFF",
                 }}
               >
-                {state?.match?.hands[3]?.cardValue}{" "}
+                {state?.match?.hands[3]?.cardValue}
               </Text>
               <FlatList
-                horizontal={true}
-                style={{
+                contentContainerStyle={{
+                  justifyContent: "center",
+                  alignItems: "flex-end",
                   height: "90%",
                   width: "100%",
                 }}
-                data={state?.match?.hands[3]?.cards}
+                horizontal={true}
+                data={mokupCards}
+                //data={state?.match?.hands[3]?.cards}
                 renderItem={renderItem}
               />
             </View>
@@ -279,12 +326,16 @@ const Game = (props) => {
               {state?.match?.hands[0]?.cardValue}{" "}
             </Text>
             <FlatList
-              horizontal={true}
-              style={{
+              contentContainerStyle={{
+                justifyContent: "center",
+                alignItems: "flex-end",
+                marginBottom: 10,
                 height: "90%",
                 width: "100%",
               }}
-              data={state?.match?.hands[0]?.cards}
+              horizontal={true}
+              data={mokupCards}
+              //data={state?.match?.hands[0]?.cards}
               renderItem={renderItem}
             />
           </View>
@@ -359,6 +410,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   cardUserTopBottom: {
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     height: "30%",
     width: "100%",
   },
@@ -369,6 +423,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   cardUserMiddle: {
+    display: "flex",
+    justifyContent: "space-around",
+    alignContent: "center",
     height: "100%",
     width: "50%",
   },
