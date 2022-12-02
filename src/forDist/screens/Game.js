@@ -115,6 +115,26 @@ const Game = (props) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.buttonMenagement}>
+        <CustomButton
+          onClickCallback={stop}
+          label={"STAI"}
+          buttonTextStyle={[styles.btText, { color: "#FFF" }]}
+          buttonContainerStyle={styles.btStop}
+        ></CustomButton>
+        <CustomButton
+          onClickCallback={requestCard}
+          label={"CARTA"}
+          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
+          buttonContainerStyle={styles.btCard}
+        ></CustomButton>
+        <CustomButton
+          onClickCallback={quitMatch}
+          label={"ESCI"}
+          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
+          buttonContainerStyle={styles.btStop}
+        ></CustomButton>
+      </View>
       <View style={styles.nameUserUp}>
         <Text style={[styles.textUsers, { textAlign: "center" }]}>
           {state?.match?.users[1]?.username}
@@ -153,25 +173,7 @@ const Game = (props) => {
         </View>
       </View>
       <View style={styles.nameUser}>
-        <CustomButton
-          onClickCallback={stop}
-          label={"STAI"}
-          buttonTextStyle={[styles.btText, { color: "#FFF" }]}
-          buttonContainerStyle={styles.btStop}
-        ></CustomButton>
         <Text style={styles.textUsers}>{state?.match?.users[0]?.username}</Text>
-        <CustomButton
-          onClickCallback={requestCard}
-          label={"CARTA"}
-          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
-          buttonContainerStyle={styles.btCard}
-        ></CustomButton>
-        <CustomButton
-          onClickCallback={quitMatch}
-          label={"quitMatch"}
-          buttonTextStyle={[styles.btText, { color: secondaryColor }]}
-          buttonContainerStyle={styles.btCard}
-        ></CustomButton>
       </View>
     </View>
   );
@@ -185,6 +187,18 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     backgroundColor: brandColor,
+  },
+  buttonMenagement:{
+    position:'absolute',
+    top:'50%',
+    left:'30%',
+    right:'30%',
+    // transform: [{translateX:'-50%'}],
+    transform: [{translateY:'-50%'}],
+    zIndex:10,
+    display:'flex',
+    flexDirection:'column',
+    alignItems:'center'
   },
   nameUserUp: {
     height: "10%",
@@ -252,15 +266,18 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    maxWidth:300,
+    marginVertical:10,
   },
   btStop: {
     borderRadius: 10,
-    backgroundColor: secondaryColor,
+    backgroundColor: brandColor,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    maxWidth:300,
   },
   btText: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "bold",
   },
   textUsers: {
