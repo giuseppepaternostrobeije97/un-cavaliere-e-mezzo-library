@@ -13,7 +13,7 @@ import { FlatList } from "react-native-web";
 //hook
 import { useMediaQuery } from "react-responsive";
 import ModalComponent from "../components/customModal/ModalComponent";
-
+import knight from '../assets/knight.png'
 // colori
 const brandColor = "#232726";
 const secondaryColor = "#77523B";
@@ -40,7 +40,7 @@ const Game = (props) => {
   const [state, setState] = useState({
     match: props.match,
     turn: false,
-    endGame: false,
+    endGame: true,
   });
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
@@ -51,15 +51,11 @@ const Game = (props) => {
 
   useEffect(() => {
     if (state.endGame) {
-      alert("gioco terminato");
       const EndMessage = {
         user_id: user.id,
         method: "quitMatch",
       };
       sendMessage(EndMessage);
-    }
-    if (!!props.callBackEndGame) {
-      props.callBackEndGame();
     }
   }, [state.endGame]);
 
@@ -192,6 +188,11 @@ const Game = (props) => {
     );
   };
 
+  const callbackEnd = () => {
+    if (!!props.callBackEndGame) {
+      props.callBackEndGame();
+    }
+  }
   return (
     <View style={styles.container}>
       <View style={styles.buttonMenagement}>
@@ -391,11 +392,32 @@ const Game = (props) => {
         <Text style={styles.textUsers}>{state?.match?.users[0]?.username}</Text>
       </View>
       <ModalComponent isOpen={state.endGame}>
-        <Text>
-          {state.match.winners.length > 0
-            ? `${state.match.winners[0].username} ha vinto la partita`
-            : "Non ha vinto nessuno"}
-        </Text>
+        <View style={{
+          width:'80%',
+          height:'80%',
+          backgroundColor:brandColor,
+          display:'flex',
+          flexDirection:'column',
+          justifyContent:'space-around',
+          alignItems:'center'
+        }}>
+          <Text style={{color:secondaryColor,fontSize:18}}>
+            {state.match?.winners?.length > 0
+              ? `${state.match?.winners[0]?.username} ha vinto la partita`
+              : "Non ha vinto nessuno"}
+          </Text>
+          <Image
+          source={knight}
+          style={{width:200,height:200}}
+          resizeMode={"contain"}
+          />
+          <CustomButton
+          onClickCallback={callbackEnd}
+          buttonContainerStyle={{backgroundColor:secondaryColor,paddingHorizontal:20,paddingVertical:10,borderRadius:5}}
+          label={'TORNA ALLA LOBBY'}
+          buttonTextStyle={{color:brandColor,fontWeight:'bold'}}
+          />
+        </View>
       </ModalComponent>
     </View>
   );
@@ -412,11 +434,9 @@ const styles = StyleSheet.create({
   },
   buttonMenagement: {
     position: "absolute",
-    top: "50%",
+    top: "47%",
     left: "30%",
     right: "30%",
-    // transform: [{translateX:'-50%'}],
-    transform: [{ translateY: "-50%" }],
     zIndex: 10,
     display: "flex",
     flexDirection: "column",

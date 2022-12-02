@@ -96,6 +96,12 @@ const Lobby = (props) => {
     });
   }
 
+  const callbackRanking = () => {
+    if (!!props.callbackRankingNav) {
+      props.callbackRankingNav();
+    }
+  }
+
   return (
     <View style={styles.container}>
       {/* bgImage */}
@@ -128,7 +134,7 @@ const Lobby = (props) => {
           <View style={styles.uiLine}></View>
           <Text style={styles.normalText}>{state?.user.score}</Text>
         </View>
-        <View style={styles.ranking}>
+        <TouchableOpacity onPress={callbackRanking} style={styles.ranking}>
           <Image
             source={rankList}
             resizeMode={"contain"}
@@ -139,7 +145,7 @@ const Lobby = (props) => {
               marginVertical: 5,
             }}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       {/* arenaListSection */}
       <View style={styles.searchArenaContainer}>
