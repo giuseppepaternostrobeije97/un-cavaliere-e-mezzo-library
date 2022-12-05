@@ -191,6 +191,7 @@ var Game = function Game(props) {
       checkEndMatch();
       disconnect();
     }, 100);
+    callbackEnd();
   };
   var disconnect = function disconnect() {
     ws.close();
@@ -207,7 +208,7 @@ var Game = function Game(props) {
     });
   };
   var callbackEnd = function callbackEnd() {
-    console.log('torna alla lobby');
+    console.log("torna alla lobby");
     if (!!props.callBackEndGame) {
       props.callBackEndGame();
     }
@@ -290,7 +291,8 @@ var Game = function Game(props) {
     style: {
       display: "flex",
       flexDirection: "column",
-      height: isDesktop ? "100%" : "",
+      //height: isDesktop ? "100%" : "",
+      height: "100%",
       marginTop: 40
     }
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
@@ -322,7 +324,8 @@ var Game = function Game(props) {
     style: {
       display: "flex",
       flexDirection: "column",
-      height: isDesktop ? "100%" : "",
+      //height: isDesktop ? "100%" : "",
+      height: "100%",
       marginTop: 40
     }
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
